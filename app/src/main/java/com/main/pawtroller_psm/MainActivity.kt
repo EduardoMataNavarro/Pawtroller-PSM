@@ -2,7 +2,6 @@ package com.main.pawtroller_psm
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(){
@@ -10,12 +9,21 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btn_feed.setOnClickListener(){
+        var feedFragment = NewsFeed()
+        var UserProfile = UserProfile()
 
-
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.MainFragment, feedFragment)
+            addToBackStack(null)
+            commit()
         }
-        btn_adopt.setOnClickListener(){
 
+        btn_feed.setOnClickListener(){
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.MainFragment, feedFragment)
+                addToBackStack(null)
+                commit()
+            }
         }
         btn_pets.setOnClickListener(){
 
@@ -24,7 +32,11 @@ class MainActivity : AppCompatActivity(){
 
         }
         btn_profile.setOnClickListener(){
-
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.MainFragment, UserProfile)
+                addToBackStack(null)
+                commit()
+            }
         }
     }
 }

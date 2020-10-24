@@ -8,6 +8,7 @@
 
     <fragment
         android:id="@+id/MainFragment"
+        android:name="com.main.pawtroller_psm.NewsFeed"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -30,22 +31,13 @@
             android:orientation="horizontal">
 
             <Space
-                android:layout_width="55dp"
+                android:layout_width="65dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1" />
 
             <Button
                 android:id="@+id/btn_feed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="7dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_border" />
-
-            <Button
-                android:id="@+id/btn_adopt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -81,7 +73,7 @@
                 android:background="@drawable/btn_border" />
 
             <Space
-                android:layout_width="55dp"
+                android:layout_width="65dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1" />
