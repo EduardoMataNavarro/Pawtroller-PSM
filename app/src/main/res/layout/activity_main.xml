@@ -8,6 +8,7 @@
 
     <fragment
         android:id="@+id/MainFragment"
+        android:name="com.main.pawtroller_psm.ForumListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
