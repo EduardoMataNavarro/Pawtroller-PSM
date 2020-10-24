@@ -11,6 +11,8 @@ class MainActivity : AppCompatActivity(){
 
         var feedFragment = NewsFeed()
         var UserProfile = UserProfile()
+        var PetProfile = PetProfile()
+
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.MainFragment, feedFragment)
@@ -26,7 +28,8 @@ class MainActivity : AppCompatActivity(){
             }
         }
         btn_pets.setOnClickListener(){
-
+            supportFragmentManager.beginTransaction().apply {
+            }
         }
         btn_forum.setOnClickListener(){
 
