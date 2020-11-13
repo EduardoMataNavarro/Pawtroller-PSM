@@ -4,27 +4,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_sign_in.*
+import kotlinx.android.synthetic.main.fragment_sign_up.*
 
 class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        btn_feed.setOnClickListener(){
-
+        text_registro.setOnClickListener(){
+            setContentView(R.layout.fragment_sign_up)
         }
-        btn_adopt.setOnClickListener(){
 
-        }
-        btn_pets.setOnClickListener(){
 
-        }
-        btn_forum.setOnClickListener(){
-
-        }
-        btn_profile.setOnClickListener(){
-
-        }
     }
 }
