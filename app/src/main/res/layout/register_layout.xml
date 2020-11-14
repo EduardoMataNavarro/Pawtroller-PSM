@@ -5,10 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <fragment
         android:id="@+id/MainFragment"
-        android:name="com.main.pawtroller_psm.SignIn"
+        android:name="com.main.pawtroller_psm.SignUp"
         android:layout_width="414dp"
         android:layout_height="731dp"
         app:layout_constraintEnd_toEndOf="parent"

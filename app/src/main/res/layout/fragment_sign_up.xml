@@ -7,8 +7,9 @@
     tools:context=".SignUp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary_dark">
 
         <TextView
             android:id="@+id/textView4"
@@ -19,7 +20,7 @@
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/roboto_thin"
             android:text="Birth Date"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/icons"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,13 +44,18 @@
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="50dp"
-            android:fontFamily="@font/roboto_thin"
+            android:layout_marginEnd="100dp"
+            android:background="@color/accent"
+            android:elevation="6dp"
+            android:fontFamily="sans-serif"
             android:text="Sign Up"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/icons"
             android:textSize="25sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.515"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,8 +67,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="150dp"
             android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
             android:text="Ya soy Usuario"
-            android:textColor="@color/primary"
+            android:textColor="@color/icons"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button2" />
@@ -72,8 +79,10 @@
             android:layout_width="186dp"
             android:layout_height="50dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             android:layout_marginEnd="150dp"
+            android:textColorHint="@color/icons"
+            app:hintTextColor="@color/icons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:hint="Name"
-                android:textColor="@color/primary_text"
+                android:textColor="@color/icons"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -93,8 +102,10 @@
             android:layout_width="178dp"
             android:layout_height="50dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             android:layout_marginEnd="20dp"
+            android:textColorHint="@color/icons"
+            app:hintTextColor="@color/icons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textInputLayout3"
             app:layout_constraintTop_toTopOf="parent">
@@ -104,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:hint="Last Name"
-                android:textColor="@color/primary_text"
+                android:textColor="@color/icons"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -116,6 +127,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:textColorHint="@color/icons"
+            app:hintTextColor="@color/icons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextDate">
@@ -125,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:hint="Email"
-                android:textColor="@color/primary_text"
+                android:textColor="@color/icons"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -137,6 +150,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:textColorHint="@color/icons"
+            app:hintTextColor="@color/icons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout7">
@@ -146,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:hint="Password"
-                android:textColor="@color/primary_text"
+                android:textColor="@color/icons"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -158,6 +173,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:textColorHint="@color/icons"
+            app:hintTextColor="@color/icons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout8">
@@ -167,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:hint="Confirm Password"
-                android:textColor="@color/primary_text"
+                android:textColor="@color/icons"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
