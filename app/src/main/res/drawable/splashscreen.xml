@@ -3,7 +3,7 @@
     <item android:drawable="@color/primary_dark" />
 
     <item >
-        <bitmap android:src="@drawable/logochico"
+        <bitmap android:src="@drawable/pawtroller_logo"
             android:gravity="center"/>
 
 

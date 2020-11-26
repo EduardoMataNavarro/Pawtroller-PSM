@@ -5,11 +5,13 @@
     android:id="@+id/frameProfile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black_overlay"
     tools:context=".UserProfile">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/primary_light">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,52 +22,55 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <ImageView
+                    android:id="@+id/userImage"
+                    android:layout_width="125dp"
+                    android:layout_height="125dp"
+                    android:layout_gravity="center|center_horizontal"
+                    android:layout_margin="5dp"
+                    android:layout_marginEnd="143dp"
+                    android:layout_marginBottom="52dp"
+                    android:background="@drawable/userimage"
+                    android:elevation="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+                    app:layout_constraintEnd_toEndOf="@+id/linearLayout2" />
+
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/primary"
+                    android:elevation="6dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/imageView"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/giraffe_banner"
-                        tools:src="@tools:sample/backgrounds/scenic" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                </LinearLayout>
+                        <ImageView
+                            android:id="@+id/fondoUser"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/giraffe_banner"
+                            tools:src="@tools:sample/backgrounds/scenic" />
 
-                <LinearLayout
-                    android:id="@+id/linearLayout3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="-62.5dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+                        <TextView
+                            android:id="@+id/userName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|center_horizontal|center_vertical"
+                            android:text="Nombre del usuario"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/primary_text"
+                            android:textSize="24sp" />
+                    </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/userImage"
-                        android:layout_width="125dp"
-                        android:layout_height="125dp"
-                        android:layout_gravity="center|center_horizontal"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/userimage" />
-
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center|center_horizontal|center_vertical"
-                        android:text="Nombre del usuario"
-                        android:textSize="24sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -73,40 +78,42 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="15dp"
+                    android:background="@color/divider"
+                    android:elevation="4dp"
                     android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
                     tools:layout_editor_absoluteX="15dp">
 
                     <TextView
-                        android:id="@+id/textView14"
+                        android:id="@+id/ciudadUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Ciudad: Santa Catarina"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textView15"
+                        android:id="@+id/estadoUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Estado: Nuevo León"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textView16"
+                        android:id="@+id/paisUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="País: México"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/age"
+                        android:id="@+id/edadUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Edad: XX"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/memberSince"
+                        android:id="@+id/registroUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Miembro desde: 20-10-2020"
@@ -130,17 +137,37 @@
                             android:id="@+id/btn_user_pets"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="1dp"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginEnd="1dp"
+                            android:layout_marginRight="1dp"
+                            android:layout_marginBottom="1dp"
                             android:layout_weight="1"
-                            android:background="@drawable/btn_border"
-                            android:text="Mascotas" />
+                            android:background="@color/accent"
+                            android:backgroundTint="@color/accent"
+                            android:elevation="6dp"
+                            android:text="Mascotas"
+                            android:textColor="@color/icons" />
 
                         <Button
                             android:id="@+id/btn_user_posts"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="1dp"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginEnd="1dp"
+                            android:layout_marginRight="1dp"
+                            android:layout_marginBottom="1dp"
                             android:layout_weight="1"
                             android:background="@drawable/btn_border"
-                            android:text="Publicaciones" />
+                            android:backgroundTint="@color/accent"
+                            android:elevation="6dp"
+                            android:text="Publicaciones"
+                            android:textColor="@color/icons" />
                     </LinearLayout>
 
                     <LinearLayout

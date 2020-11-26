@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".MainApp">
 
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@color/primary_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pawtroller_logo_letras" />
+
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="0dp"
@@ -14,7 +24,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tabOptions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/imageView8">
 
     </FrameLayout>
 
