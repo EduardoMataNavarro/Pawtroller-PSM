@@ -1,13 +1,23 @@
 package com.main.pawtroller_psm
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.main.pawtroller_psm.Models.ResponseLogin
+import com.main.pawtroller_psm.Models.UserLogin
 import kotlinx.android.synthetic.main.fragment_sign_in.*
-import kotlinx.android.synthetic.main.fragment_sign_up.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity(){
+
+    var emailTxt:TextView?=null
+    var passwordTxt:TextView?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         Thread.sleep(1000)
@@ -16,6 +26,10 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
+
+        emailTxt= findViewById(R.id.emailLogin)
+        passwordTxt= findViewById(R.id.passwordLogin)
+
 
         registro()
 
@@ -31,9 +45,35 @@ class MainActivity : AppCompatActivity(){
 
     fun iniciarApp(){
         btn_login.setOnClickListener(){
-            val iMainApp= Intent(applicationContext,MainApp::class.java)
-            startActivity(iMainApp)
+            login()
         }
+    }
+
+    fun login(){
+        val email:String = emailTxt!!.text.toString()
+        val password:String = passwordTxt!!.text.toString()
+        val userLogin = UserLogin(email, password)
+
+        val service: Service = RestEngine.getRestEngine().create(Service::class.java)
+        val result: Call<ResponseLogin> = service.login(userLogin)
+
+        result.enqueue(object: Callback<ResponseLogin>{
+            override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "Error" + t.message,Toast.LENGTH_LONG).show()
+            }
+
+            override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
+                val exito = "success"
+                val respuesta = response.body()
+                val message:String = respuesta!!.message.toString()
+                if(exito.equals(message)){
+                    val iMainApp = Intent(applicationContext, MainApp::class.java)
+                    startActivity(iMainApp)
+                }else{
+                    Toast.makeText(this@MainActivity, message, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
     }
 
 }

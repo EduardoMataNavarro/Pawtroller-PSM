@@ -20,7 +20,7 @@
             android:layout_marginEnd="100dp"
             android:background="@color/accent"
             android:fontFamily="sans-serif"
-            android:text="Login"
+            android:text="@string/boton_login"
             android:textAlignment="center"
             android:textColor="@color/icons"
             android:textSize="30sp"
@@ -36,7 +36,7 @@
             android:layout_height="26dp"
             android:layout_marginTop="30dp"
             android:fontFamily="sans-serif"
-            android:text="Registrate"
+            android:text="@string/registrate"
             android:textAlignment="center"
             android:textColor="@color/icons"
             android:textSize="18sp"
@@ -52,7 +52,7 @@
             android:layout_marginStart="75dp"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/roboto_thin"
-            android:text="¿Aun no eres Usuario?"
+            android:text="@string/liga_no_usuario"
             android:textColor="@color/icons"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,10 +73,13 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView7">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
-                android:hint="Email"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
                 android:textColor="@color/icons"
                 android:textStyle="bold" />
 
@@ -98,10 +101,11 @@
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:textColor="@color/icons"
                 android:textStyle="bold" />
 
@@ -115,6 +119,7 @@
             android:layout_marginTop="70dp"
             android:layout_marginEnd="40dp"
             android:src="@drawable/pawtroller_logo_letras"
+            android:contentDescription="logo_letras"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

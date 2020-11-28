@@ -4,4 +4,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_login">FullscreenActivity</string>
     <string name="nombre_foro">Forum</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="boton_login">Login</string>
+    <string name="liga_no_usuario">¿Aun no eres Usuario?</string>
+    <string name="registrate">Registrate</string>
 </resources>
