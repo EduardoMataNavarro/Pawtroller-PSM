@@ -27,7 +27,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
 
         <EditText
-            android:id="@+id/editTextDate"
+            android:id="@+id/birthdateTxt"
             android:layout_width="370dp"
             android:layout_height="36dp"
             android:layout_marginStart="20dp"
@@ -35,7 +35,7 @@
             android:layout_marginEnd="20dp"
             android:ems="10"
             android:fontFamily="@font/roboto_thin"
-            android:inputType="date"
+            android:singleLine="true"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -43,7 +43,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/boton_registrar"
             android:layout_width="0dp"
             android:layout_height="46dp"
             android:layout_marginStart="100dp"
@@ -72,7 +72,7 @@
             android:textColor="@color/icons"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button2" />
+            app:layout_constraintTop_toBottomOf="@+id/boton_registrar" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout3"
@@ -89,10 +89,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameRegTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:hint="Name"
+                android:inputType="textFilter"
+                android:singleLine="true"
                 android:textColor="@color/icons"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -111,10 +114,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lastnameRegTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:hint="Last Name"
+                android:inputType="text"
+                android:singleLine="true"
                 android:textColor="@color/icons"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -131,13 +137,16 @@
             app:hintTextColor="@color/icons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDate">
+            app:layout_constraintTop_toBottomOf="@+id/birthdateTxt">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailRegTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:hint="Email"
+                android:inputType="textEmailSubject"
+                android:singleLine="true"
                 android:textColor="@color/icons"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -157,10 +166,13 @@
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout7">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passRegTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:hint="Password"
+                android:inputType="textPassword"
+                android:singleLine="true"
                 android:textColor="@color/icons"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -180,10 +192,13 @@
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout8">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confirpassRegTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:singleLine="true"
                 android:textColor="@color/icons"
                 android:textSize="18sp"
                 android:textStyle="bold" />

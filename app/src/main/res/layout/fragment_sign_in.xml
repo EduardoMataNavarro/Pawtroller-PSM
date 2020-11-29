@@ -106,8 +106,10 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_thin"
                 android:hint="@string/password"
+                android:inputType="textPassword"
+                android:singleLine="true"
                 android:textColor="@color/icons"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

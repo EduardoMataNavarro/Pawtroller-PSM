@@ -2,6 +2,7 @@ package com.main.pawtroller_psm
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -30,15 +31,21 @@ class MainActivity : AppCompatActivity(){
         emailTxt= findViewById(R.id.emailLogin)
         passwordTxt= findViewById(R.id.passwordLogin)
 
-
-        registro()
+        ocultarTeclado()
+        registroFormulario()
 
         iniciarApp()
     }
 
-    fun registro(){
+    fun ocultarTeclado(){
+        btn_login?.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) hideSoftKeyboard()
+        }
+    }
+
+    fun registroFormulario(){
         text_registro.setOnClickListener(){
-            val iMainActivity2= Intent(applicationContext,MainActivity2::class.java)
+            val iMainActivity2= Intent(applicationContext, MainActivity2::class.java)
             startActivity(iMainActivity2)
         }
     }
@@ -49,31 +56,63 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
+
+    //funcion encargada del login
     fun login(){
         val email:String = emailTxt!!.text.toString()
         val password:String = passwordTxt!!.text.toString()
-        val userLogin = UserLogin(email, password)
 
-        val service: Service = RestEngine.getRestEngine().create(Service::class.java)
-        val result: Call<ResponseLogin> = service.login(userLogin)
+        val datosCorrectos:Boolean =validaDatos(email,password)
+        if(datosCorrectos) {
+            val userLogin = UserLogin(email, password)
 
-        result.enqueue(object: Callback<ResponseLogin>{
-            override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Error" + t.message,Toast.LENGTH_LONG).show()
-            }
+            val service: Service = RestEngine.getRestEngine().create(Service::class.java)
+            val result: Call<ResponseLogin> = service.login(userLogin)
 
-            override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
-                val exito = "success"
-                val respuesta = response.body()
-                val message:String = respuesta!!.message.toString()
-                if(exito.equals(message)){
-                    val iMainApp = Intent(applicationContext, MainApp::class.java)
-                    startActivity(iMainApp)
-                }else{
-                    Toast.makeText(this@MainActivity, message, Toast.LENGTH_LONG).show()
+            result.enqueue(object : Callback<ResponseLogin> {
+                override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
+                    Toast.makeText(this@MainActivity, "Error" + t.message, Toast.LENGTH_LONG).show()
                 }
-            }
-        })
+
+                override fun onResponse(
+                    call: Call<ResponseLogin>,
+                    response: Response<ResponseLogin>
+                ) {
+                    val exito = "success"
+                    val respuesta = response.body()
+                    val message: String = respuesta!!.message.toString()
+                    if (exito.equals(message)) {
+                        val iMainApp = Intent(applicationContext, MainApp::class.java)
+                        startActivity(iMainApp)
+                    } else {
+                        Toast.makeText(this@MainActivity, message, Toast.LENGTH_LONG).show()
+                    }
+                }
+            })
+        }
     }
 
+    fun validaDatos(email:String,password:String):Boolean{
+        val datoVacio:String = ""
+
+        if(email.equals(datoVacio) ||password.equals(datoVacio)){
+            Toast.makeText(this@MainActivity, "Introduce todos los campos", Toast.LENGTH_LONG).show()
+            return false
+        }
+        if(!email.contains("@") || !email.contains(".")) {
+            Toast.makeText(this@MainActivity, "Introduce una dirección de correo valida", Toast.LENGTH_LONG).show()
+            return false
+        }
+        if(password.length<8 || password.length >16 ){
+            Toast.makeText(this@MainActivity, "El password debe contener un minimo de 8 y un máximo de 16 carácteres" , Toast.LENGTH_LONG).show()
+            return false
+        }
+        return true
+    }
+
+    fun hideSoftKeyboard() {
+        val inputMethodManager: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+    }
 }
