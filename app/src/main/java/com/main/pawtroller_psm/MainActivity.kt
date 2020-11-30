@@ -6,6 +6,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.main.pawtroller_psm.Models.ResponseLogin
 import com.main.pawtroller_psm.Models.UserLogin
 import kotlinx.android.synthetic.main.fragment_sign_in.*
@@ -82,7 +83,10 @@ class MainActivity : AppCompatActivity(){
                     val respuesta = response.body()
                     val message: String = respuesta!!.message.toString()
                     if (exito.equals(message)) {
+                        var gson = Gson()
+                        var userString = gson.toJson(respuesta.user[0])
                         val iMainApp = Intent(applicationContext, MainApp::class.java)
+                        iMainApp.putExtra("userString",userString)
                         startActivity(iMainApp)
                     } else {
                         Toast.makeText(this@MainActivity, message, Toast.LENGTH_LONG).show()

@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.main.pawtroller_psm"
-        minSdkVersion 24
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -43,6 +43,7 @@ dependencies {
     //Esto para generar un interseptor que nos va a permitir desplegar la respuesta del  servicio en el logcat
     implementation 'com.squareup.okhttp3:okhttp:4.6.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.6.0'
+    implementation 'androidx.wear:wear:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -50,6 +51,7 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
 
     implementation 'com.google.android.material:material:1.0.0'
+    compileOnly 'com.google.android.wearable:wearable:2.6.0'
 
 
 }

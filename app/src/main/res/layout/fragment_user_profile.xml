@@ -65,7 +65,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|center_horizontal|center_vertical"
-                            android:text="Nombre del usuario"
                             android:textAlignment="viewStart"
                             android:textColor="@color/primary_text"
                             android:textSize="24sp" />
@@ -85,44 +84,35 @@
                     tools:layout_editor_absoluteX="15dp">
 
                     <TextView
-                        android:id="@+id/ciudadUser"
+                        android:id="@+id/correoUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Ciudad: Santa Catarina"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/estadoUser"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Estado: Nuevo León"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/paisUser"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="País: México"
-                        android:textSize="16sp" />
-
-                    <TextView
                         android:id="@+id/edadUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Edad: XX"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/registroUser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Miembro desde: 20-10-2020"
                         android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/password_text" />
 
                         <EditText
                             android:id="@+id/editTextTextPassword"
@@ -135,10 +125,10 @@
                             android:inputType="textPassword" />
 
                         <Button
-                            android:id="@+id/button3"
+                            android:id="@+id/passEditBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Button" />
+                            android:text="@string/password_text_btn" />
                     </LinearLayout>
 
                 </LinearLayout>
