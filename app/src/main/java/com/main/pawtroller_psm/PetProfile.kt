@@ -1,31 +1,26 @@
 package com.main.pawtroller_psm
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.google.gson.Gson
+import com.main.pawtroller_psm.Models.TipoMascota
+import kotlinx.android.synthetic.main.fragment_pet_profile.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PetProfile.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PetProfile : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
@@ -34,8 +29,18 @@ class PetProfile : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pet_profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_pet_profile, container, false)
+
+        view.fabCrearPet.setOnClickListener() {
+            var userString:String = ""
+            userString= arguments?.getString("userString").toString()
+            abrirCrearPet(userString)
+        }
+
+        return view
     }
+
+
 
     companion object {
         /**
@@ -51,9 +56,34 @@ class PetProfile : Fragment() {
         fun newInstance(param1: String, param2: String) =
             PetProfile().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }
+
+    private fun abrirCrearPet(userString:String) {
+
+        val service: Service = RestEngine.getRestEngine().create(Service::class.java)
+        val result: Call<List<List<TipoMascota>>> = service.obtenerMascotas()
+        var arrayMascotas: List<List<TipoMascota>> = listOf()
+
+        result.enqueue(object : Callback<List<List<TipoMascota>>> {
+            override fun onResponse(call: Call<List<List<TipoMascota>>>, response: Response<List<List<TipoMascota>>>) {
+                arrayMascotas = response.body()!!
+                var gson = Gson()
+                var listaMascostaString = gson.toJson(arrayMascotas[0])
+
+                val iCrearPetActivity = Intent(context,CrearPetActivity::class.java)
+                iCrearPetActivity.putExtra("listaMascostaString",listaMascostaString)
+                iCrearPetActivity.putExtra("userString",userString)
+                startActivity(iCrearPetActivity)
+            }
+
+            override fun onFailure(call: Call<List<List<TipoMascota>>>, t: Throwable) {
+                Toast.makeText(context, "Error" + t.message, Toast.LENGTH_LONG).show()
+            }
+
+        })
+    }
+
 }

@@ -8,13 +8,16 @@ import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.main.pawtroller_psm.Models.User
 import kotlinx.android.synthetic.main.activity_main_app.*
+import kotlinx.android.synthetic.main.fragment_pet_profile.*
 
-class MainApp : AppCompatActivity(), Communicator {
+class MainApp : AppCompatActivity(), Communicator{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_app)
         supportActionBar?.hide()
+
+
         val datos: Intent = intent
         var userString = datos.getStringExtra("userString")
         var gson = Gson()

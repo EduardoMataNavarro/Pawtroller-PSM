@@ -7,6 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".PetProfile">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintPetProfile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="6dp">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabCrearPet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="50dp"
+            android:clickable="true"
+            android:src="@drawable/ic_pets"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -205,7 +223,9 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
 </FrameLayout>

@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".CrearPetActivity2"></activity>
+        <activity android:name=".CrearPetActivity" />
         <activity android:name=".MainActivity2" />
         <activity android:name=".MainApp" />
         <activity

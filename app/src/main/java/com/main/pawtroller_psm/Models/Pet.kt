@@ -1,15 +1,34 @@
 package com.main.pawtroller_psm.Models
 
-import java.util.*
-
 data class Pet(
     val id: String,
     val name: String,
     val nickname:String,
-    val birthdate: Date,
-    val age: Int,
-    val status: Int,
-    val owner_id: Int,
-    val type_is: Int
+    val birthdate: String,
+    val age: String,
+    val status: String,
+    val user_id: String,
+    val type_id: String,
+    val updated_at: String,
+    val created_at: String,
+    val description: String
 
+)
+
+data class TipoMascota(
+    val id: String,
+    val name:String,
+    val description: String,
+    val created_at: String,
+    val updated_at: String
+)
+
+data class RegistrarPet(
+    val userid: String,
+    val name: String,
+    val nickname: String,
+    val description: String,
+    val birthdate: String,
+    val age: String,
+    val pettype: String
 )
