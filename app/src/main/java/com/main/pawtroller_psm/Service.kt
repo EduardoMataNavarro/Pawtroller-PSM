@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface Service {
 
@@ -19,4 +20,7 @@ interface Service {
 
     @POST("api/pet/create")
     fun agregarMascotas(@Body crearPet: RegistrarPet): Call<List<Pet>>
+
+    @GET("api/pet/user/{id}")
+    fun consultaMascotasPorUsuario(@Path("id")id: Int): Call<List<List<Pet>>>
 }

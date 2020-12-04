@@ -6,7 +6,7 @@ data class Pet(
     val nickname:String,
     val birthdate: String,
     val age: String,
-    val status: String,
+    val status_id: String,
     val user_id: String,
     val type_id: String,
     val updated_at: String,

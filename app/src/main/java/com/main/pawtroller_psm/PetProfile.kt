@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
+import com.main.pawtroller_psm.Models.Pet
 import com.main.pawtroller_psm.Models.TipoMascota
 import kotlinx.android.synthetic.main.fragment_pet_profile.view.*
 import retrofit2.Call
@@ -31,9 +32,20 @@ class PetProfile : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_pet_profile, container, false)
 
+        var userString:String = ""
+        var listaMascotaUsuarioSting:String = ""
+        userString= arguments?.getString("userString").toString()
+        listaMascotaUsuarioSting= arguments?.getString("listaMascotaUsuarioSting").toString()
+        var gson = Gson()
+        var listaMascotaUsuario:List<Pet> = gson.fromJson(listaMascotaUsuarioSting, Array<Pet>::class.java).toList() as ArrayList<Pet>
+
+        view.nombrePet.text = listaMascotaUsuario[0].name
+        view.edadPet.text ="Edad: " +listaMascotaUsuario[0].age
+        view.descripcionPet.text = "Descripción: " +listaMascotaUsuario[0].description
+        view.fecNacPet.text = "Fecha de nacimiento: " + listaMascotaUsuario[0].birthdate
+
         view.fabCrearPet.setOnClickListener() {
-            var userString:String = ""
-            userString= arguments?.getString("userString").toString()
+
             abrirCrearPet(userString)
         }
 

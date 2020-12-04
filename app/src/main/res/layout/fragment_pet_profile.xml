@@ -74,8 +74,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Nombre"
-                            android:textColor="@color/primary_text"
-                            android:textSize="30sp" />
+                            android:textColor="@color/icons"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/edadPet"
@@ -84,7 +85,9 @@
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
                             android:text="Edad: 12"
-                            android:textSize="16sp" />
+                            android:textColor="@color/icons"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/estatusPet"
@@ -93,29 +96,30 @@
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
                             android:text="Estatus: Perdido, cerca de San Pedro"
-                            android:textSize="18sp" />
+                            android:textColor="@color/icons"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/pet_general_info"
                     android:layout_width="match_parent"
-                    android:layout_height="125dp"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="12dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="@color/divider"
                         android:elevation="4dp"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/caracterizticasPet"
+                            android:id="@+id/fecNacPet"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Características: Pelo largo, color dorado, gordito"
                             android:textSize="16sp" />
 
                         <TextView
@@ -123,7 +127,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
-                            android:text="Descripción: Jueguetón y muy migable, siempre está moviendo la colita"
                             android:textSize="16sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -133,46 +136,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/btn_user_pets"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:layout_marginStart="1dp"
-                            android:layout_marginLeft="1dp"
-                            android:layout_marginTop="1dp"
-                            android:layout_marginEnd="1dp"
-                            android:layout_marginRight="1dp"
-                            android:layout_marginBottom="1dp"
-                            android:layout_weight="1"
-                            android:background="@color/accent"
-                            android:elevation="6dp"
-                            android:text="Fotos"
-                            android:textColor="@color/icons" />
-
-                        <Button
-                            android:id="@+id/btn_user_posts"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:layout_marginStart="1dp"
-                            android:layout_marginLeft="1dp"
-                            android:layout_marginTop="1dp"
-                            android:layout_marginEnd="1dp"
-                            android:layout_marginRight="1dp"
-                            android:layout_marginBottom="1dp"
-                            android:layout_weight="1"
-                            android:background="@color/accent"
-                            android:elevation="6dp"
-                            android:text="Videos"
-                            android:textColor="@color/icons" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
