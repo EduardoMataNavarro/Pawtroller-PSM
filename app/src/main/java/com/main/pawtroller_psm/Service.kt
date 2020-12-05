@@ -23,4 +23,7 @@ interface Service {
 
     @GET("api/pet/user/{id}")
     fun consultaMascotasPorUsuario(@Path("id")id: Int): Call<List<List<Pet>>>
+
+    @GET("api/pet/{id}/media")
+    fun consultaImagenPorMascota(@Path("id")id: Int): Call<List<List<Pet_media>>>
 }

@@ -155,7 +155,7 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         }else{
             savedDay = "0" +  dayOfMonth.toString()
         }
-        if(month>9) {
+        if(month>8) {
             savedMonth = (month + 1).toString()
         }else{
             savedMonth = "0" + (month+ 1).toString()

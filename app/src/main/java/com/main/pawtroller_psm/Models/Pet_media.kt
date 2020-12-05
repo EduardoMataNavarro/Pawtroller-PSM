@@ -1,11 +1,10 @@
 package com.main.pawtroller_psm.Models
 
-import java.sql.Timestamp
-
 data class Pet_media(
-    val id: Int,
+    val id: String,
     val type: String,
     val path: String,
-    val pet_id: Int,
-    val timestamps: Timestamp
+    val pet_id: String,
+    val created_at: String,
+    val updated_at : String
 )
