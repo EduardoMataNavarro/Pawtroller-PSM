@@ -7,14 +7,10 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import com.main.pawtroller_psm.Models.Pet
 import com.main.pawtroller_psm.Models.RegistrarPet
 import com.main.pawtroller_psm.Models.TipoMascota
 import com.main.pawtroller_psm.Models.User
 import kotlinx.android.synthetic.main.fragment_crear_pet.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.time.LocalDate
 import java.time.Period
 import java.util.*
@@ -90,33 +86,14 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         btnCrearPet.setOnClickListener(){
 
             val registrarPet: RegistrarPet = obtenerDatosCrearPet(user)
+            //MOCHADO
+            var gson = Gson()
+            var registrarPetString = gson.toJson(registrarPet)
 
-            val service: Service = RestEngine.getRestEngine().create(Service::class.java)
-            val result: Call<List<Pet>> = service.agregarMascotas(registrarPet)
-
-            result.enqueue(object : Callback<List<Pet>> {
-                override fun onResponse(call: Call<List<Pet>>,response: Response<List<Pet>>) {
-                    val respuesta = response.body()
-                    val id: String = respuesta!!.get(0).id.toString()
-                    if (id != null) {
-                        Toast.makeText(this@CrearPetActivity,"Pet registrada con exito",Toast.LENGTH_LONG).show()
-                        val iMainActivity = Intent(applicationContext, CrearPetActivity2::class.java)
-                        startActivity(iMainActivity)
-                    } else {
-                        Toast.makeText(
-                            this@CrearPetActivity,
-                            "Ocurrio un error al registrar a tu mascota",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<List<Pet>>, t: Throwable) {
-                    Toast.makeText(this@CrearPetActivity, t.message, Toast.LENGTH_LONG).show()
-                }
-
-            })
-
+            val iMainActivity = Intent(applicationContext, CrearPetActivity2::class.java)
+            iMainActivity.putExtra("registrarPetString",registrarPetString)
+            startActivity(iMainActivity)
+            finish()
         }
     }
 
@@ -130,8 +107,8 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         var age: Int = period.years
         var pettype:String = tipePetReg!!.text.toString()
         val userid: String = user.id.toString()
-
-        return RegistrarPet(userid,name,nickName,descripcion,birthdate.toString() ,age.toString(),pettype.toString())
+//todo validar datos
+        return RegistrarPet(userid,name,nickName,descripcion,birthdate.toString() ,age.toString(),pettype.toString(),"")
     }
 
 

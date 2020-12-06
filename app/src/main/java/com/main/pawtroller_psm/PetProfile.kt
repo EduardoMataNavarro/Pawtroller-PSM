@@ -12,7 +12,6 @@ import com.main.pawtroller_psm.Models.Pet
 import com.main.pawtroller_psm.Models.Pet_media
 import com.main.pawtroller_psm.Models.TipoMascota
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_pet_profile.*
 import kotlinx.android.synthetic.main.fragment_pet_profile.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,21 +36,26 @@ class PetProfile : Fragment() {
         val view = inflater.inflate(R.layout.fragment_pet_profile, container, false)
 
         var userString:String = ""
-        var listaMascotaUsuarioSting:String = ""
+        var listaMascotaUsuarioString:String = ""
         userString= arguments?.getString("userString").toString()
-        listaMascotaUsuarioSting= arguments?.getString("listaMascotaUsuarioSting").toString()
+        listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioSting").toString()
         var gson = Gson()
-        var listaMascotaUsuario:List<Pet> = gson.fromJson(listaMascotaUsuarioSting, Array<Pet>::class.java).toList() as ArrayList<Pet>
 
-        // TODO validar si viene vacia la lista de mascotas
-        actualizaVista(view,listaMascotaUsuario)
+        if(!"[]".equals(listaMascotaUsuarioString)) {
+            var listaMascotaUsuario: List<Pet> =
+                ArrayList(gson.fromJson(listaMascotaUsuarioString, Array<Pet>::class.java)
+                    .toList())
 
-        view.btnBack.setOnClickListener() {
-            cambiarPetAtras(listaMascotaUsuario.size,view,listaMascotaUsuario)
-        }
+            // TODO validar si viene vacia la lista de mascotas
+            actualizaVista(view, listaMascotaUsuario)
 
-        view.btnFwd.setOnClickListener() {
-            cambiarPetAdelante(listaMascotaUsuario.size,view,listaMascotaUsuario)
+            view.btnBack.setOnClickListener() {
+                cambiarPetAtras(listaMascotaUsuario.size, view, listaMascotaUsuario)
+            }
+
+            view.btnFwd.setOnClickListener() {
+                cambiarPetAdelante(listaMascotaUsuario.size, view, listaMascotaUsuario)
+            }
         }
 
         view.fabCrearPet.setOnClickListener() {
@@ -67,8 +71,9 @@ class PetProfile : Fragment() {
         view.descripcionPet.text = "Descripción: " +listaMascotaUsuario[idPet].description
         view.fecNacPet.text = "Fecha de nacimiento: " + listaMascotaUsuario[idPet].birthdate
         view.nicknamePet.text = "Apodo: " + listaMascotaUsuario[idPet].nickname
-
-        cargarImagenPet(view,listaMascotaUsuario[idPet].id)
+        Picasso.get().load(listaMascotaUsuario[idPet].img_path).into(view.avatarPet)
+        // TODO cargar imagenes de la pet
+       // cargarImagenesPet(view,listaMascotaUsuario[idPet].id)
     }
 
     private fun cambiarPetAtras(size:Int,view: View, listaMascotaUsuario: List<Pet>) {
@@ -89,7 +94,7 @@ class PetProfile : Fragment() {
         actualizaVista(view,listaMascotaUsuario)
     }
 
-    fun cargarImagenPet(view: View,id: String) {
+    fun cargarImagenesPet(view: View,id: String) {
         val service: Service = RestEngine.getRestEngine().create(Service::class.java)
         val result: Call<List<List<Pet_media>>> = service.consultaImagenPorMascota(1)
         var arrayImagenes: List<List<Pet_media>> = listOf()
@@ -97,7 +102,6 @@ class PetProfile : Fragment() {
         result.enqueue(object : Callback<List<List<Pet_media>>> {
             override fun onResponse(call: Call<List<List<Pet_media>>>, response: Response<List<List<Pet_media>>>) {
                 arrayImagenes = response.body()!!
-                // TODO validar si la pet no trae ninguna imagen
                 Picasso.get().load(arrayImagenes[0][0].path).into(view.avatarPet)
                 Picasso.get().load(arrayImagenes[0][0].path).into(view.imageView3)
             }

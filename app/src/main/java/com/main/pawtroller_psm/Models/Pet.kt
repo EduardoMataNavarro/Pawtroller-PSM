@@ -11,7 +11,8 @@ data class Pet(
     val type_id: String,
     val updated_at: String,
     val created_at: String,
-    val description: String
+    val description: String,
+    val img_path: String
 
 )
 
@@ -30,5 +31,6 @@ data class RegistrarPet(
     val description: String,
     val birthdate: String,
     val age: String,
-    val pettype: String
+    val pettype: String,
+    val petimg:String
 )

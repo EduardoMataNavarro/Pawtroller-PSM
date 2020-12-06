@@ -62,22 +62,20 @@ class MainApp : AppCompatActivity(), Communicator{
         result.enqueue(object : Callback<List<List<Pet>>> {
             override fun onResponse(call: Call<List<List<Pet>>>,response: Response<List<List<Pet>>>) {
                 val respuesta = response.body()
-                val id: String = respuesta!!.get(0).get(0).id.toString()
-                if (id != null) {
-                    val bundle = Bundle()
-                    var gson = Gson()
-                    var listaMascotaUsuario: List<Pet> = respuesta!![0]
-                    var listaMascotaUsuarioSting = gson.toJson(listaMascotaUsuario)
-                    bundle.putString("userString",userString)
-                    bundle.putString("listaMascotaUsuarioSting",listaMascotaUsuarioSting)
-                    frag.arguments = bundle
-
-                    val transaction = supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.frame, frag)
-                    transaction.commit()
-                } else {
-                    Toast.makeText(this@MainApp,"Ocurrio un error, ",Toast.LENGTH_LONG).show()
+                if(respuesta!!.get(0).size<1) {
+                    Toast.makeText(this@MainApp, "Aun no has registrado ninguna mascota", Toast.LENGTH_LONG).show()
                 }
+                val bundle = Bundle()
+                var gson = Gson()
+                var listaMascotaUsuario: List<Pet> = respuesta!![0]
+                var listaMascotaUsuarioSting = gson.toJson(listaMascotaUsuario)
+                bundle.putString("userString", userString)
+                bundle.putString("listaMascotaUsuarioSting", listaMascotaUsuarioSting)
+                frag.arguments = bundle
+
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.frame, frag)
+                transaction.commit()
             }
 
             override fun onFailure(call: Call<List<List<Pet>>>, t: Throwable) {
