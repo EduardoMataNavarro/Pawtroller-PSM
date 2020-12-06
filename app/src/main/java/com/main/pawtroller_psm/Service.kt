@@ -14,6 +14,10 @@ interface Service {
     @POST("api/signupuser")
     fun registrar(@Body userResgister: UserRegister): Call <List<User>>
 
+    @Headers("Accept:application/json")
+    @POST("api/resetpassword")
+    fun resetPassword(@Body resetPasswordUser: ResetPasswordUser ): Call <ResponseLogin>
+
     @GET("api/pet_type")
     fun obtenerMascotas(): Call<List<List<TipoMascota>>>
 

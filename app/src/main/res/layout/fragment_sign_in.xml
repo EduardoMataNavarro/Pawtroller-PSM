@@ -65,6 +65,9 @@
             android:layout_marginStart="70dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="70dp"
+            android:backgroundTintMode="src_over"
+            android:elevation="6dp"
+            android:hint="Email"
             android:textColorHint="@color/icons"
             app:boxBackgroundMode="outline"
             app:hintTextColor="@color/icons"
@@ -76,7 +79,6 @@
                 android:id="@+id/emailLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_thin"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
@@ -92,6 +94,9 @@
             android:layout_marginStart="70dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="70dp"
+            android:backgroundTintMode="src_over"
+            android:elevation="6dp"
+            android:hint="Password"
             android:textColorHint="@color/icons"
             app:boxBackgroundMode="outline"
             app:hintTextColor="@color/icons"
@@ -104,12 +109,11 @@
                 android:id="@+id/passwordLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_thin"
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:singleLine="true"
                 android:textColor="@color/icons"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

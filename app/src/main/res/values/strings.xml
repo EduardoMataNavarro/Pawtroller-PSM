@@ -9,7 +9,7 @@
     <string name="boton_login">Login</string>
     <string name="liga_no_usuario">¿Aun no eres Usuario?</string>
     <string name="registrate">Registrate</string>
-    <string name="password_text">Password: </string>
+    <string name="password_text">Confirmación Nuevo Password: </string>
     <string name="password_text_btn">Cambiar</string>
     <string name="title_activity_crear_pet">CrearPetActivity</string>
     <string name="tipo_mascota">Tpo de mascota:</string>

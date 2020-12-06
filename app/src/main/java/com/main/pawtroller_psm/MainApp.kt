@@ -48,7 +48,7 @@ class MainApp : AppCompatActivity(), Communicator{
                 R.id.action_home->{mostrarFragment(fHome,userString)}
                 R.id.action_pets->{mostrarPetProfile(fPets,userString, user)}
                 R.id.action_forum->{mostrarFragment(fForum,userString)}
-                R.id.action_profile->{mostrarFragment(fProfile,userString)}
+                R.id.action_profile->{mostrarPetProfile(fProfile,userString,user)}
             }
             return@setOnNavigationItemSelectedListener true
         }

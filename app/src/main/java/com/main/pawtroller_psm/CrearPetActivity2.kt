@@ -28,8 +28,6 @@ class CrearPetActivity2 : AppCompatActivity() , UploadRequestBody.UploadCallback
 
     var nameRegCon: TextView? = null
     var imgRegCon: ImageView? = null
-    //var imgArray: ByteArray? = null
-    //var bitmap: Bitmap? = null
     var file: File ?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,8 +66,6 @@ class CrearPetActivity2 : AppCompatActivity() , UploadRequestBody.UploadCallback
         if (resultCode === RESULT_OK) {
             val path: Uri? = data?.data
             imgRegCon?.setImageURI(path)
-            //file = File(data!!.data!!.path)
-
 
             val parcelFileDescriptor = contentResolver.openFileDescriptor(path!!, "r", null)?:return
 
@@ -78,23 +74,6 @@ class CrearPetActivity2 : AppCompatActivity() , UploadRequestBody.UploadCallback
             val outputStream = FileOutputStream(file)
             inputStream.copyTo(outputStream)
 
-            //val requestBody= UploadRequestBody(file!!,"image",this)
-           // val filePart = MultipartBody.Part.createFormData("upload_file", file!!.name, requestBody)
-            //var requestBody: RequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), file)
-            //var filePart = MultipartBody.Part.createFormData("upload_file", file.name, requestBody)
-            // bitmap = MediaStore.Images.Media.getBitmap(contentResolver, path)
-/*
-            val selectedImage: Uri? = data.getData();
-            val filePath = {MediaStore.Images.Media.DATA};
-            val loader: CursorLoader = CursorLoader(applicationContext,
-                selectedImage!!,filePath,null,null,null)
-
-            val c: Cursor? = getContentResolver().query(selectedImage!!, filePath,
-                null, null, null);
-            c?.moveToFirst();
-            val columnIndex: Int = c!!.getColumnIndex(filePath[0]);
-            val FilePathStr = c.getString(columnIndex);
-            c.close();*/
         }
     }
 

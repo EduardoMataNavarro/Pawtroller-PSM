@@ -37,6 +37,12 @@ data class UserRegister(
     val birthdate:String
 )
 
+data class ResetPasswordUser(
+    val password:String,
+    val password_confirmation:String,
+    val user_id: String
+)
+
 data class ResponseRegister(
     val id:String,
     val name:String,

@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.main.pawtroller_psm.Models.Pet
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.card_pet.view.*
 
 class RecyclerPetAdapter (val listaPet:List<Pet>):RecyclerView.Adapter<RecyclerPetAdapter.PetHolder>(){
 
@@ -20,10 +22,13 @@ class RecyclerPetAdapter (val listaPet:List<Pet>):RecyclerView.Adapter<RecyclerP
     override fun getItemCount(): Int =listaPet.size
 
 
-    class PetHolder(view: View):RecyclerView.ViewHolder(view){
+    class PetHolder(val view: View):RecyclerView.ViewHolder(view){
 
         fun render(pet: Pet){
-
+            view.nombreRecyclerPet.text = pet.name
+            view.edadRecyclerPet.text = pet.age
+            view.descRecyclerPet.text = pet.description
+            Picasso.get().load(pet.img_path).into(view.imagenAvatarPet)
         }
     }
 }
