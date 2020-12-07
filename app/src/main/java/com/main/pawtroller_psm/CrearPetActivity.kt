@@ -17,6 +17,12 @@ import java.util.*
 
 class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
 
+    var user: User ?=null
+    var listaTipoMascota: List<TipoMascota> = listOf()
+
+    var userString: String ?= null
+    var listaTipoMascotaString:  String ?= null
+
     var day = 0
     var month = 0
     var year = 0
@@ -35,13 +41,11 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         supportActionBar?.hide()
 
         val datos: Intent = intent
-        var listaMascostaString = datos.getStringExtra("listaMascostaString")
+        listaTipoMascotaString = datos.getStringExtra("listaTipoMascotaString")
+        userString = datos.getStringExtra("userString")
         var gson = Gson()
-        var listaTipoMascota:List<TipoMascota> = gson.fromJson(listaMascostaString, Array<TipoMascota>::class.java).toList() as ArrayList<TipoMascota>
-        var userString = datos.getStringExtra("userString")
-        var gson2 = Gson()
-        var user: User = gson2.fromJson(userString,User::class.java)
-
+        listaTipoMascota = ArrayList(gson.fromJson(listaTipoMascotaString, Array<TipoMascota>::class.java).toList())
+        user = gson.fromJson(userString,User::class.java)
 
         birthdatePetReg = findViewById(R.id.bithdatePetReg)
         option = findViewById(R.id.spinnerRegPet)
@@ -63,8 +67,8 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                     if(options[p2].equals(listaTipoMascota[p2].name)) {
                         desc = listaTipoMascota[p2].description
                         pettype = listaTipoMascota[p2].id
+                        break
                     }
-                    break
                 }
                 textView10.text = desc
                 tipePetReg.text= pettype
@@ -79,7 +83,7 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
         abrirDatePicker()
 
-        crearMascotaContinuacion(user)
+        crearMascotaContinuacion(user!!)
 
         fabCerrarVentana.setOnClickListener(){
             finish()

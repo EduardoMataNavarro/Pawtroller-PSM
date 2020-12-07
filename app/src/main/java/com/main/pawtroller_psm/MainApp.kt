@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.main.pawtroller_psm.Models.Pet
+import com.main.pawtroller_psm.Models.TipoMascota
 import com.main.pawtroller_psm.Models.User
 import kotlinx.android.synthetic.main.activity_main_app.*
 import kotlinx.android.synthetic.main.fragment_pet_profile.*
@@ -19,9 +20,13 @@ class MainApp : AppCompatActivity(), Communicator{
 
     var user: User ?=null
     var listaMascotaUsuario : List<Pet> = listOf()
+    var listaTipoMascota: List<TipoMascota> = listOf()
+    var listaEstatusPet = listOf("bien","perdido","fallecido")
 
     var userString: String ?= null
     var listaMascotaUsuarioString: String ?= null
+    var listaTipoMascotaString:  String ?= null
+    var listaEstatusPetString: String ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,12 +76,42 @@ class MainApp : AppCompatActivity(), Communicator{
                 if(respuesta!!.get(0).size<1) {
                     Toast.makeText(this@MainApp, "Aun no has registrado ninguna mascota", Toast.LENGTH_LONG).show()
                 }
-                val bundle = Bundle()
+
                 var gson = Gson()
                 listaMascotaUsuario = respuesta!![0]
                 listaMascotaUsuarioString = gson.toJson(listaMascotaUsuario)
+
+                obtenerTiposPets(frag)
+                //listaEstatusPet = obtenerEstatusPets()
+
+
+            }
+
+            override fun onFailure(call: Call<List<List<Pet>>>, t: Throwable) {
+                Toast.makeText(this@MainApp, t.message, Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun obtenerTiposPets(frag: Fragment){
+        val service: Service = RestEngine.getRestEngine().create(Service::class.java)
+        val result: Call<List<List<TipoMascota>>> = service.obtenerMascotas()
+        var arrayMascotas: List<List<TipoMascota>> = listOf()
+
+        result.enqueue(object : Callback<List<List<TipoMascota>>> {
+            override fun onResponse(call: Call<List<List<TipoMascota>>>, response: Response<List<List<TipoMascota>>>) {
+                arrayMascotas = response.body()!!
+
+                listaTipoMascota= arrayMascotas.get(0)
+
+                var gson = Gson()
+                listaTipoMascotaString = gson.toJson(listaTipoMascota)
+
+                val bundle = Bundle()
                 bundle.putString("userString", userString)
                 bundle.putString("listaMascotaUsuarioString", listaMascotaUsuarioString)
+                bundle.putString("listaTipoMascotaString",listaTipoMascotaString)
+
                 frag.arguments = bundle
 
                 val transaction = supportFragmentManager.beginTransaction()
@@ -84,9 +119,10 @@ class MainApp : AppCompatActivity(), Communicator{
                 transaction.commit()
             }
 
-            override fun onFailure(call: Call<List<List<Pet>>>, t: Throwable) {
-                Toast.makeText(this@MainApp, t.message, Toast.LENGTH_LONG).show()
+            override fun onFailure(call: Call<List<List<TipoMascota>>>, t: Throwable) {
+                Toast.makeText(this@MainApp, "Error" + t.message, Toast.LENGTH_LONG).show()
             }
+
         })
     }
 
@@ -116,6 +152,7 @@ class MainApp : AppCompatActivity(), Communicator{
         val bundle = Bundle()
         bundle.putString("userString",userString)
         bundle.putString("listaMascotaUsuarioString", listaMascotaUsuarioString)
+        bundle.putString("listaTipoMascotaString",listaTipoMascotaString)
         frag.arguments = bundle
 
         val transaction = supportFragmentManager.beginTransaction()

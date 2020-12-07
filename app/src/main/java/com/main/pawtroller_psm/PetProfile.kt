@@ -33,8 +33,15 @@ class PetProfile : Fragment() {
 
     var idPet = 0
     private val FOTO_PET = 2000
+
+    var user: User ?=null
     var listaMascotaUsuario: List<Pet> = listOf()
     var listaPetMedia: List<Pet_media> = listOf()
+    var listaTipoMascota: List<TipoMascota> = listOf()
+
+    var userString: String ?= null
+    var listaMascotaUsuarioString: String ?= null
+    var listaTipoMascotaString:  String ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,11 +57,12 @@ class PetProfile : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_pet_profile, container, false)
 
-        var userString:String = ""
-        var listaMascotaUsuarioString:String = ""
         userString= arguments?.getString("userString").toString()
         listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioString").toString()
+        listaTipoMascotaString = arguments?.getString("listaTipoMascotaString").toString()
         var gson = Gson()
+
+        listaTipoMascota = ArrayList(gson.fromJson(listaTipoMascotaString, Array<TipoMascota>::class.java).toList())
 
         if(!"[]".equals(listaMascotaUsuarioString)) {
                  listaMascotaUsuario =
@@ -74,7 +82,7 @@ class PetProfile : Fragment() {
         }
 
         view.fabCrearPet.setOnClickListener() {
-            abrirCrearPet(userString)
+            abrirCrearPet(userString!!)
         }
 
         view.fabCargarFotoPet.setOnClickListener(){
@@ -158,6 +166,15 @@ class PetProfile : Fragment() {
         view.descripcionPet.text = "Descripción: " +listaMascotaUsuario[idPet].description
         view.fecNacPet.text = "Fecha de nacimiento: " + listaMascotaUsuario[idPet].birthdate
         view.nicknamePet.text = "Apodo: " + listaMascotaUsuario[idPet].nickname
+        var tipo: String = ""
+        for ( item in listaTipoMascota){
+            if(listaMascotaUsuario[idPet].type_id.equals(item.id)) {
+                tipo = item.description
+                view.tipoPet.text = "Tipo de Mascota:" + tipo
+                break
+            }
+        }
+        view.tipoPet.text = "Tipo de Mascota:" + tipo
         Picasso.get().load(listaMascotaUsuario[idPet].img_path).into(view.avatarPet)
         // TODO cargar imagenes de la pet
         cargarImagenesPet()
@@ -235,27 +252,11 @@ class PetProfile : Fragment() {
 
     private fun abrirCrearPet(userString:String) {
 
-        val service: Service = RestEngine.getRestEngine().create(Service::class.java)
-        val result: Call<List<List<TipoMascota>>> = service.obtenerMascotas()
-        var arrayMascotas: List<List<TipoMascota>> = listOf()
-
-        result.enqueue(object : Callback<List<List<TipoMascota>>> {
-            override fun onResponse(call: Call<List<List<TipoMascota>>>, response: Response<List<List<TipoMascota>>>) {
-                arrayMascotas = response.body()!!
-                var gson = Gson()
-                var listaMascostaString = gson.toJson(arrayMascotas[0])
-
                 val iCrearPetActivity = Intent(context,CrearPetActivity::class.java)
-                iCrearPetActivity.putExtra("listaMascostaString",listaMascostaString)
+                iCrearPetActivity.putExtra("listaTipoMascotaString",listaTipoMascotaString)
                 iCrearPetActivity.putExtra("userString",userString)
                 startActivity(iCrearPetActivity)
-            }
 
-            override fun onFailure(call: Call<List<List<TipoMascota>>>, t: Throwable) {
-                Toast.makeText(context, "Error" + t.message, Toast.LENGTH_LONG).show()
-            }
-
-        })
     }
 
 

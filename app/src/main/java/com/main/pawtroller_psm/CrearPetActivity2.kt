@@ -9,9 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import com.main.pawtroller_psm.Models.Pet
-import com.main.pawtroller_psm.Models.RegistrarPet
-import com.main.pawtroller_psm.Models.UploadRequestBody
+import com.main.pawtroller_psm.Models.*
 import kotlinx.android.synthetic.main.fragment_crear_pet.*
 import kotlinx.android.synthetic.main.fragment_nueva_foto_pet.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -27,6 +25,10 @@ import java.io.FileOutputStream
 
 class CrearPetActivity2 : AppCompatActivity() , UploadRequestBody.UploadCallback{
 
+    var registrarPet: RegistrarPet ?= null
+
+    var registrarPetString:String ?= null
+
     var nameRegCon: TextView? = null
     var imgRegCon: ImageView? = null
     var file: File ?=null
@@ -37,14 +39,14 @@ class CrearPetActivity2 : AppCompatActivity() , UploadRequestBody.UploadCallback
         supportActionBar?.hide()
 
         val datos: Intent = intent
-        var registrarPetString = datos.getStringExtra("registrarPetString")
+        registrarPetString = datos.getStringExtra("registrarPetString")
         var gson = Gson()
-        var registrarPet = gson.fromJson(registrarPetString, RegistrarPet::class.java)
+        registrarPet = gson.fromJson(registrarPetString, RegistrarPet::class.java)
 
         nameRegCon = findViewById(R.id.nameRegCon)
         imgRegCon = findViewById(R.id.imgRegCon)
 
-        nameRegCon!!.text = registrarPet.name
+        nameRegCon!!.text = registrarPet!!.name
 
         imgRegCon!!.setOnClickListener() {
             cargarImagen()
