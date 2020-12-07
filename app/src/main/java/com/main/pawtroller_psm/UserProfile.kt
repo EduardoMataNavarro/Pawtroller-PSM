@@ -58,7 +58,7 @@ class UserProfile : Fragment() {
         val view =inflater.inflate(R.layout.fragment_user_profile, container, false)
 
         var userString = arguments?.getString("userString")
-        var listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioSting").toString()
+        var listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioString").toString()
         var gson = Gson()
         user = gson.fromJson(userString, User::class.java)
 

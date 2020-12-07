@@ -39,7 +39,7 @@ class NewsFeed : Fragment() {
         var userString:String = ""
         var listaMascotaUsuarioString:String = ""
         userString= arguments?.getString("userString").toString()
-        listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioSting").toString()
+        listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioString").toString()
         var gson = Gson()
 
         if(!"[]".equals(listaMascotaUsuarioString)) {

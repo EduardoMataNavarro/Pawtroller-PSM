@@ -35,7 +35,6 @@ class MainApp : AppCompatActivity(), Communicator{
         user = gson.fromJson(userString, User::class.java)
 
         if (userString != null) {
-            obtenerPets()
             adminTabBar()
         }
     }
@@ -74,10 +73,10 @@ class MainApp : AppCompatActivity(), Communicator{
                 }
                 val bundle = Bundle()
                 var gson = Gson()
-                var listaMascotaUsuario: List<Pet> = respuesta!![0]
+                listaMascotaUsuario = respuesta!![0]
                 listaMascotaUsuarioString = gson.toJson(listaMascotaUsuario)
                 bundle.putString("userString", userString)
-                bundle.putString("listaMascotaUsuarioSting", listaMascotaUsuarioString)
+                bundle.putString("listaMascotaUsuarioString", listaMascotaUsuarioString)
                 frag.arguments = bundle
 
                 val transaction = supportFragmentManager.beginTransaction()
@@ -101,7 +100,6 @@ class MainApp : AppCompatActivity(), Communicator{
                 if(respuesta!!.get(0).size<1) {
                     Toast.makeText(this@MainApp, "Aun no has registrado ninguna mascota", Toast.LENGTH_LONG).show()
                 }
-                val bundle = Bundle()
                 var gson = Gson()
                 listaMascotaUsuario = respuesta!![0]
                 listaMascotaUsuarioString = gson.toJson(listaMascotaUsuario)
@@ -114,9 +112,10 @@ class MainApp : AppCompatActivity(), Communicator{
     }
 
     fun mostrarFragment(frag:Fragment){
+        obtenerPets()
         val bundle = Bundle()
         bundle.putString("userString",userString)
-        bundle.putString("listaMascotaUsuarioSting", listaMascotaUsuarioString)
+        bundle.putString("listaMascotaUsuarioString", listaMascotaUsuarioString)
         frag.arguments = bundle
 
         val transaction = supportFragmentManager.beginTransaction()
