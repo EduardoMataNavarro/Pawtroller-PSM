@@ -80,6 +80,10 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         abrirDatePicker()
 
         crearMascotaContinuacion(user)
+
+        fabCerrarVentana.setOnClickListener(){
+            finish()
+        }
     }
 
     private fun crearMascotaContinuacion(user:User) {

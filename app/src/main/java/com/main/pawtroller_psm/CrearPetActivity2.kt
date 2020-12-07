@@ -12,6 +12,7 @@ import com.google.gson.Gson
 import com.main.pawtroller_psm.Models.Pet
 import com.main.pawtroller_psm.Models.RegistrarPet
 import com.main.pawtroller_psm.Models.UploadRequestBody
+import kotlinx.android.synthetic.main.fragment_crear_pet.*
 import kotlinx.android.synthetic.main.fragment_nueva_foto_pet.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -51,6 +52,10 @@ class CrearPetActivity2 : AppCompatActivity() , UploadRequestBody.UploadCallback
 
         btnRegPet2.setOnClickListener() {
             completarDatos(registrarPet)
+        }
+
+        fabCerrarVentana2.setOnClickListener(){
+            finish()
         }
     }
 

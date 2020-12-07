@@ -17,6 +17,12 @@ import retrofit2.Response
 
 class MainApp : AppCompatActivity(), Communicator{
 
+    var user: User ?=null
+    var listaMascotaUsuario : List<Pet> = listOf()
+
+    var userString: String ?= null
+    var listaMascotaUsuarioString: String ?= null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_app)
@@ -24,40 +30,41 @@ class MainApp : AppCompatActivity(), Communicator{
 
 
         val datos: Intent = intent
-        var userString = datos.getStringExtra("userString")
+        userString = datos.getStringExtra("userString")
         var gson = Gson()
-        var user = gson.fromJson(userString, User::class.java)
+        user = gson.fromJson(userString, User::class.java)
 
         if (userString != null) {
-            adminTabBar(userString,user)
+            obtenerPets()
+            adminTabBar()
         }
     }
 
-    fun adminTabBar(userString:String,user:User){
+    fun adminTabBar(){
         val fHome = NewsFeed()
         val fPets = PetProfile()
         val fForum = ForumListView()
         val fProfile = UserProfile()
 
-        mostrarFragment(fHome,userString)
+        mostrarPetProfile(fHome)
 
         ocultarTeclado()
 
         tabOptions.setOnNavigationItemSelectedListener { item ->
             when(item.itemId){
-                R.id.action_home->{mostrarFragment(fHome,userString)}
-                R.id.action_pets->{mostrarPetProfile(fPets,userString, user)}
-                R.id.action_forum->{mostrarFragment(fForum,userString)}
-                R.id.action_profile->{mostrarPetProfile(fProfile,userString,user)}
+                R.id.action_home->{mostrarFragment(fHome)}
+                R.id.action_pets->{mostrarFragment(fPets)}
+                R.id.action_forum->{mostrarFragment(fForum)}
+                R.id.action_profile->{mostrarFragment(fProfile)}
             }
             return@setOnNavigationItemSelectedListener true
         }
     }
 
-    fun mostrarPetProfile(frag:Fragment,userString: String, user: User){
+    fun mostrarPetProfile(frag:Fragment){
 
         val service: Service = RestEngine.getRestEngine().create(Service::class.java)
-        val result: Call<List<List<Pet>>> = service.consultaMascotasPorUsuario(user.id.toInt())
+        val result: Call<List<List<Pet>>> = service.consultaMascotasPorUsuario(user!!.id.toInt())
 
         result.enqueue(object : Callback<List<List<Pet>>> {
             override fun onResponse(call: Call<List<List<Pet>>>,response: Response<List<List<Pet>>>) {
@@ -68,9 +75,9 @@ class MainApp : AppCompatActivity(), Communicator{
                 val bundle = Bundle()
                 var gson = Gson()
                 var listaMascotaUsuario: List<Pet> = respuesta!![0]
-                var listaMascotaUsuarioSting = gson.toJson(listaMascotaUsuario)
+                listaMascotaUsuarioString = gson.toJson(listaMascotaUsuario)
                 bundle.putString("userString", userString)
-                bundle.putString("listaMascotaUsuarioSting", listaMascotaUsuarioSting)
+                bundle.putString("listaMascotaUsuarioSting", listaMascotaUsuarioString)
                 frag.arguments = bundle
 
                 val transaction = supportFragmentManager.beginTransaction()
@@ -84,9 +91,32 @@ class MainApp : AppCompatActivity(), Communicator{
         })
     }
 
-    fun mostrarFragment(frag:Fragment,userString: String){
+    fun obtenerPets(){
+        val service: Service = RestEngine.getRestEngine().create(Service::class.java)
+        val result: Call<List<List<Pet>>> = service.consultaMascotasPorUsuario(user!!.id.toInt())
+
+        result.enqueue(object : Callback<List<List<Pet>>> {
+            override fun onResponse(call: Call<List<List<Pet>>>,response: Response<List<List<Pet>>>) {
+                val respuesta = response.body()
+                if(respuesta!!.get(0).size<1) {
+                    Toast.makeText(this@MainApp, "Aun no has registrado ninguna mascota", Toast.LENGTH_LONG).show()
+                }
+                val bundle = Bundle()
+                var gson = Gson()
+                listaMascotaUsuario = respuesta!![0]
+                listaMascotaUsuarioString = gson.toJson(listaMascotaUsuario)
+            }
+
+            override fun onFailure(call: Call<List<List<Pet>>>, t: Throwable) {
+                Toast.makeText(this@MainApp, t.message, Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    fun mostrarFragment(frag:Fragment){
         val bundle = Bundle()
         bundle.putString("userString",userString)
+        bundle.putString("listaMascotaUsuarioSting", listaMascotaUsuarioString)
         frag.arguments = bundle
 
         val transaction = supportFragmentManager.beginTransaction()

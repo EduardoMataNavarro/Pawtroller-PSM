@@ -1,15 +1,16 @@
 package com.main.pawtroller_psm
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.main.pawtroller_psm.Models.Pet
+import com.main.pawtroller_psm.Models.Pet_media
+import kotlinx.android.synthetic.main.fragment_news_feed.*
+import kotlinx.android.synthetic.main.fragment_pet_profile.*
 
 /**
  * A simple [Fragment] subclass.
@@ -17,15 +18,14 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class NewsFeed : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    var listaMascotaUsuario: List<Pet> = listOf()
+    var listaPetMedia: List<Pet_media> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
@@ -34,7 +34,23 @@ class NewsFeed : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_news_feed, container, false)
+        val view =  inflater.inflate(R.layout.fragment_news_feed, container, false)
+
+        var userString:String = ""
+        var listaMascotaUsuarioString:String = ""
+        userString= arguments?.getString("userString").toString()
+        listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioSting").toString()
+        var gson = Gson()
+
+        if(!"[]".equals(listaMascotaUsuarioString)) {
+            listaMascotaUsuario =
+                ArrayList(
+                    gson.fromJson(listaMascotaUsuarioString, Array<Pet>::class.java)
+                        .toList()
+                )
+        }
+
+        return view
     }
 
     companion object {
@@ -51,9 +67,19 @@ class NewsFeed : Fragment() {
         fun newInstance(param1: String, param2: String) =
             NewsFeed().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initRecycler()
+    }
+
+    private fun initRecycler() {
+        recyclerViewPetPerdida.layoutManager = LinearLayoutManager (context,LinearLayoutManager.HORIZONTAL, false)
+        val adapter = RecyclerPetPerdidaAdapter(listaMascotaUsuario)
+        recyclerViewPetPerdida.adapter = adapter
     }
 }

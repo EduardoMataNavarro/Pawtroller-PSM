@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import com.main.pawtroller_psm.Models.ResponseLogin
 import com.main.pawtroller_psm.Models.UserLogin
 import kotlinx.android.synthetic.main.fragment_sign_in.*
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -79,17 +80,28 @@ class MainActivity : AppCompatActivity(){
                     call: Call<ResponseLogin>,
                     response: Response<ResponseLogin>
                 ) {
-                    val exito = "success"
                     val respuesta = response.body()
-                    val message: String = respuesta!!.message.toString()
-                    if (exito.equals(message)) {
-                        var gson = Gson()
-                        var userString = gson.toJson(respuesta.user[0])
-                        val iMainApp = Intent(applicationContext, MainApp::class.java)
-                        iMainApp.putExtra("userString",userString)
-                        startActivity(iMainApp)
+                    if (response.isSuccessful) {
+                        if("success".equals(respuesta!!.message)) {
+                            var gson = Gson()
+                            var userString = gson.toJson(respuesta!!.user[0])
+                            val iMainApp = Intent(applicationContext, MainApp::class.java)
+                            iMainApp.putExtra("userString", userString)
+                            startActivity(iMainApp)
+                        }else{
+                            Toast.makeText(this@MainActivity, respuesta.message, Toast.LENGTH_LONG).show()
+                        }
                     } else {
-                        Toast.makeText(this@MainActivity, message, Toast.LENGTH_LONG).show()
+                        try {
+                            val jObjError = JSONObject(response.errorBody()!!.string())
+                            Toast.makeText(
+                                this@MainActivity,
+                                jObjError.getJSONObject("errors").toString(),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } catch (e: Exception) {
+                            Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             })

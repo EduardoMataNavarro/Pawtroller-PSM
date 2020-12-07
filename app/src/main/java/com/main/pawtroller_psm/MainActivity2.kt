@@ -10,6 +10,7 @@ import com.main.pawtroller_psm.Models.User
 import com.main.pawtroller_psm.Models.UserRegister
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import kotlinx.android.synthetic.main.fragment_sign_up.*
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -73,8 +74,7 @@ class MainActivity2 : AppCompatActivity() {
         val datosCorrectos:Boolean = validaDatos(name,email,password,password_confirmation,birthdate)
 
         if(datosCorrectos) {
-            val userRegister: UserRegister =
-                UserRegister(name, email, password, password_confirmation, birthdate)
+            val userRegister = UserRegister(name, email, password, password_confirmation, birthdate)
 
             val service: Service = RestEngine.getRestEngine().create(Service::class.java)
             val result: Call<List<User>> = service.registrar(userRegister)
@@ -87,13 +87,22 @@ class MainActivity2 : AppCompatActivity() {
 
                 override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                     val respuesta = response.body()
-                    val id: String = respuesta!!.get(0).id.toString()
-                    if (id != null) {
+
+                    if (response.isSuccessful) {
                         Toast.makeText(this@MainActivity2, "Usuario Creado con exito", Toast.LENGTH_LONG).show()
                         val iMainActivity = Intent(applicationContext, MainActivity::class.java)
                         startActivity(iMainActivity)
                     } else {
-                        Toast.makeText(this@MainActivity2, "Error", Toast.LENGTH_LONG).show()
+                        try {
+                            val jObjError = JSONObject(response.errorBody()!!.string())
+                            Toast.makeText(
+                                this@MainActivity2,
+                                jObjError.getJSONObject("errors").toString(),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } catch (e: Exception) {
+                            Toast.makeText(this@MainActivity2, e.message, Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             })

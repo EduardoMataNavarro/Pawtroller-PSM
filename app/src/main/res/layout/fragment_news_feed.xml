@@ -34,6 +34,8 @@
                     android:id="@+id/feed_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/divider"
+                    android:backgroundTintMode="src_over"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -50,220 +52,20 @@
                             android:id="@+id/textView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center|center_horizontal|center_vertical"
                             android:layout_weight="1"
                             android:text="Ellos necesitan de tu ayuda"
-                            android:textSize="24sp" />
+                            android:textAlignment="center"
+                            android:textColor="@color/accent"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
 
-                        <TableLayout
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewPetPerdida"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
 
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="5dp">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:scaleType="center"
-                                        tools:src="@tools:sample/avatars" />
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="0dp"
-                                        android:layout_weight="1"
-                                        android:text="Cerca de"
-                                        android:textSize="12dp" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:scaleType="center"
-                                        tools:src="@tools:sample/avatars" />
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="5dp"
-                                        android:text="Cerca de:" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:scaleType="center"
-                                        tools:src="@tools:sample/avatars" />
-
-                                    <TextView
-                                        android:id="@+id/textView4"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="5dp"
-                                        android:text="Cerca de:" />
-                                </LinearLayout>
-
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="5dp">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:scaleType="center"
-                                        tools:src="@tools:sample/avatars" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="5dp"
-                                        android:text="Cerca de:" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:scaleType="center"
-                                        tools:src="@tools:sample/avatars" />
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="5dp"
-                                        android:text="Cerca de:" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:scaleType="center"
-                                        tools:src="@tools:sample/avatars" />
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="5dp"
-                                        android:text="Cerca de:" />
-                                </LinearLayout>
-
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="5dp">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:scaleType="center"
-                                        tools:src="@tools:sample/avatars" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="5dp"
-                                        android:text="Cerca de:" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:scaleType="center"
-                                        tools:src="@tools:sample/avatars" />
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="5dp"
-                                        android:text="Cerca de:" />
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:scaleType="center"
-                                        tools:src="@tools:sample/avatars" />
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="5dp"
-                                        android:text="Cerca de:" />
-                                </LinearLayout>
-
-                            </TableRow>
-
-                        </TableLayout>
                     </LinearLayout>
                 </LinearLayout>
 

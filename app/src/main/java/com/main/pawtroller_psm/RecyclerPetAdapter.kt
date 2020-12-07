@@ -28,7 +28,7 @@ class RecyclerPetAdapter (val listaPet:List<Pet>):RecyclerView.Adapter<RecyclerP
             view.nombreRecyclerPet.text = pet.name
             view.edadRecyclerPet.text = pet.age
             view.descRecyclerPet.text = pet.description
-            Picasso.get().load(pet.img_path).into(view.imagenAvatarPet)
+            Picasso.get().load(pet.img_path).into(view.fotoPet)
         }
     }
 }

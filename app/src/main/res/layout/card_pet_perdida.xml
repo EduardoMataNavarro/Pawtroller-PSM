@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view_pet"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="15dp"
     android:clickable="true"
@@ -11,13 +11,13 @@
     app:cardElevation="6dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/fotoPet"
-            android:layout_width="match_parent"
+            android:id="@+id/fotoPetPerdida"
+            android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_weight="2"
             android:scaleType="centerCrop"
@@ -31,7 +31,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/textView5Perdida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -43,7 +43,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/nombreRecyclerPet"
+                android:id="@+id/nombreRecyclerPetPerdida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -55,7 +55,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView11"
+                android:id="@+id/textView11Perdida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -67,7 +67,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/edadRecyclerPet"
+                android:id="@+id/edadRecyclerPetPerdida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -79,7 +79,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/textView12Perdida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -91,7 +91,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/descRecyclerPet"
+                android:id="@+id/descRecyclerPetPerdida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
