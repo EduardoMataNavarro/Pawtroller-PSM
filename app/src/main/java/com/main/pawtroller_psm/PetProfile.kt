@@ -48,12 +48,11 @@ class PetProfile : Fragment() {
     var listaMascotaEstatusPerdidoString: String = "[]"
     var listaMascotaEstatusfallecidaString: String = "[]"
 
-    var options: List<String> = listOf("Bien","Perdido","Fallecido")
 
-    var optionEstatusPet: Spinner?= null
     var estatusPetId: String ?= null
     var statusMascota: String?= null
-    var vistas: Int = 0
+    var vistas : Int = 0
+    var seleccion: Int =0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,24 +78,6 @@ class PetProfile : Fragment() {
 
         listaTipoMascota = ArrayList(gson.fromJson(listaTipoMascotaString, Array<TipoMascota>::class.java).toList())
 
-        optionEstatusPet = view.findViewById<Spinner>(R.id.spinnerEstatusPet)
-
-        optionEstatusPet?.adapter =  ArrayAdapter(activity?.applicationContext!!,android.R.layout.simple_spinner_item, options) as SpinnerAdapter
-
-        optionEstatusPet?.onItemSelectedListener = object:
-            AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                estatusPetId= options[p2]
-                vistas++
-                if(vistas>1)
-                cambiarEstatusPet()
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-               // estatusPetId = "Bien"
-            }
-
-        }
 
         if(!"[]".equals(listaMascotaEstatusPerdidoString)) {
             listaMascotaEstatusPerdido =
@@ -131,6 +112,9 @@ class PetProfile : Fragment() {
             }
         }
 
+        view.buttonCambiarEstatus.setOnClickListener(){
+            cambiarEstatusPet()
+        }
         view.fabCrearPet.setOnClickListener() {
             abrirCrearPet(userString!!)
         }
@@ -228,7 +212,7 @@ class PetProfile : Fragment() {
         var tipo: String = ""
         for ( item in listaTipoMascota){
             if(listaMascotaUsuario[idPet].type_id.equals(item.id)) {
-                tipo = item.description
+                tipo = item.name
                 view.tipoPet.text = "Tipo de Mascota:" + tipo
                 break
             }
@@ -237,8 +221,7 @@ class PetProfile : Fragment() {
         Picasso.get().load(listaMascotaUsuario[idPet].img_path).into(view.avatarPet)
 
         asignaEstatusPet()
-        optionEstatusPet!!.setSelection(estatusPetId!!.toInt())
-        // TODO cargar imagenes de la pet
+        view.estatusPet3.text = statusMascota
         cargarImagenesPet()
     }
 
@@ -357,4 +340,5 @@ class PetProfile : Fragment() {
         val adapter = RecyclerPetFotoAdapter(listaPetMedia)
         recyclerFotoPet.adapter = adapter
     }
+
 }

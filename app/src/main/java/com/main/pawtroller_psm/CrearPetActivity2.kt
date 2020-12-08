@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_nueva_foto_pet.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -112,10 +113,10 @@ class CrearPetActivity2 : AppCompatActivity() , UploadRequestBody.UploadCallback
                     Toast.makeText(this@CrearPetActivity2, "Ocurrio un error", Toast.LENGTH_LONG)
                         .show()
                 } else {
-
-                    Toast.makeText(this@CrearPetActivity2,"Pet registrada con éxito",Toast.LENGTH_LONG).show()
-                    finish()
+                    var petid = respuesta[0].id
+                    registraEstatusPet(petid)
                 }
+
             }
 
             override fun onFailure(call: Call<List<Pet>>, t: Throwable) {
@@ -124,6 +125,48 @@ class CrearPetActivity2 : AppCompatActivity() , UploadRequestBody.UploadCallback
 
         })
 
+    }
+
+    private fun registraEstatusPet(petid: String) {
+        var estatusPetNueva = EstatusPet(petid,"Bien","","")
+        val service: Service = RestEngine.getRestEngine().create(Service::class.java)
+        val result: Call<ResponseEstatusPet> = service.altaStatus(estatusPet!!)
+
+        result.enqueue(object : Callback<ResponseEstatusPet> {
+            override fun onResponse(
+                call: Call<ResponseEstatusPet>,
+                response: Response<ResponseEstatusPet>
+            ) {
+                val respuesta = response.body()
+                if (response.isSuccessful) {
+                    Toast.makeText(
+                        this@CrearPetActivity2,
+                        "Pet registrada con éxito",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    finish()
+                } else {
+                    try {
+                        val jObjError = JSONObject(response.errorBody()!!.string())
+                        Toast.makeText(
+                            this@CrearPetActivity2,
+                            jObjError.getJSONObject("errors").toString(),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            this@CrearPetActivity2,
+                            e.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseEstatusPet>, t: Throwable) {
+                Toast.makeText(this@CrearPetActivity2, t.message, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     override fun onProgressUpdate(percentage: Int) {

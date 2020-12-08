@@ -53,4 +53,8 @@ interface Service {
     @PUT("api/pet/status")
     fun cambiarStatus(@Body estatusPet: EstatusPet):  Call<ResponseEstatusPet>
 
+    @Headers("Accept:application/json")
+    @POST("api/pet/status")
+    fun altaStatus(@Body estatusPet: EstatusPet):  Call<ResponseEstatusPet>
+
 }

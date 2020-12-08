@@ -26,8 +26,8 @@ class RecyclerPetPerdidaAdapter (val listaMascotaEstatusPerdido:List<ResponseEst
 
         fun render(petPerdida: ResponseEstatusPet){
             view.nombreRecyclerPetPerdida.text = petPerdida.pet.name
-            view.edadRecyclerPetPerdida.text = petPerdida.pet.age
-            view.descRecyclerPetPerdida.text = petPerdida.pet.description
+            view.edadRecyclerPetPerdida.text = petPerdida.fecha_estatus
+            view.descRecyclerPetPerdida.text = petPerdida.description
             Picasso.get().load(petPerdida.pet.img_path).into(view.fotoPetPerdida)
         }
     }

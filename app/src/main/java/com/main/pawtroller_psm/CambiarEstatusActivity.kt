@@ -2,8 +2,8 @@ package com.main.pawtroller_psm
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.main.pawtroller_psm.Models.EstatusPet
 import com.main.pawtroller_psm.Models.ResponseEstatusPet
@@ -19,6 +19,8 @@ var desccripcionTxt: TextView ? = null
     var estatusPet: EstatusPet ?= null
     var petid: String ?= null
     var estatus: String ?= null
+    var options: List<String> = listOf("Bien","Perdido","Fallecido")
+    var optionEstatusPet: Spinner?= null
 
 class CambiarEstatusActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +31,28 @@ class CambiarEstatusActivity : AppCompatActivity() {
 
         val datos: Intent = intent
         petid = datos.getStringExtra("petid")
-        estatus = datos.getStringExtra("estatus")
 
         desccripcionTxt = findViewById(R.id.descestatusPet)
         fechaTxt = findViewById(R.id.fechaEstatusPet)
 
+        optionEstatusPet = findViewById<Spinner>(R.id.spinnerEstatusPet)
 
+        optionEstatusPet?.adapter =  ArrayAdapter(applicationContext,android.R.layout.simple_spinner_item, options) as SpinnerAdapter
+
+        optionEstatusPet?.onItemSelectedListener = object:
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if(p2==2)
+                    estatus="fallecido"
+                if(p2==1)
+                    estatus= "perdido"
+                if(p2==0)
+                    estatus= "bien"
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
 
         fabCerrarVentana3.setOnClickListener(){
             finish()
@@ -63,8 +81,7 @@ class CambiarEstatusActivity : AppCompatActivity() {
                             "Estatus actualizado con éxito",
                             Toast.LENGTH_LONG
                         ).show()
-                        val iMainActivity = Intent(applicationContext, MainActivity::class.java)
-                        startActivity(iMainActivity)
+                        finish()
                     } else {
                         try {
                             val jObjError = JSONObject(response.errorBody()!!.string())
@@ -73,6 +90,7 @@ class CambiarEstatusActivity : AppCompatActivity() {
                                 jObjError.getJSONObject("errors").toString(),
                                 Toast.LENGTH_LONG
                             ).show()
+                            finish()
                         } catch (e: Exception) {
                             Toast.makeText(
                                 this@CambiarEstatusActivity,

@@ -26,9 +26,9 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     var day = 0
     var month = 0
     var year = 0
-    var savedDay = ""
-    var savedMonth = ""
-    var savedYear = ""
+    var savedDay = "01"
+    var savedMonth = "01"
+    var savedYear = "1900"
     var desc: String = ""
     var pettype: String= ""
 
@@ -91,18 +91,29 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     }
 
     private fun crearMascotaContinuacion(user:User) {
-        btnCrearPet.setOnClickListener(){
+        btnCrearPet.setOnClickListener() {
 
             val registrarPet: RegistrarPet = obtenerDatosCrearPet(user)
-            //MOCHADO
-            var gson = Gson()
-            var registrarPetString = gson.toJson(registrarPet)
 
-            val iMainActivity = Intent(applicationContext, CrearPetActivity2::class.java)
-            iMainActivity.putExtra("registrarPetString",registrarPetString)
-            startActivity(iMainActivity)
-            finish()
+            if (validarDatos(registrarPet)) {
+                var gson = Gson()
+                var registrarPetString = gson.toJson(registrarPet)
+
+                val iMainActivity = Intent(applicationContext, CrearPetActivity2::class.java)
+                iMainActivity.putExtra("registrarPetString", registrarPetString)
+                startActivity(iMainActivity)
+                finish()
+            }
         }
+    }
+
+    private fun validarDatos(registrarPet: RegistrarPet): Boolean {
+        if("1900-01-01".equals(registrarPet.birthdate) || "".equals(registrarPet.name) || "".equals(registrarPet.nickname)
+            || "".equals(registrarPet.pettype) || "".equals(registrarPet.description)) {
+            Toast.makeText(this@CrearPetActivity, "Completa todos los campos" , Toast.LENGTH_LONG).show()
+            return false
+        }
+        return true
     }
 
     private fun obtenerDatosCrearPet(user: User): RegistrarPet {
@@ -115,7 +126,8 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         var age: Int = period.years
         var pettype:String = tipePetReg!!.text.toString()
         val userid: String = user.id.toString()
-//todo validar datos
+
+
         return RegistrarPet(userid,name,nickName,descripcion,birthdate.toString() ,age.toString(),pettype.toString(),"")
     }
 

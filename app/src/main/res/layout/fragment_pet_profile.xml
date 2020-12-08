@@ -123,11 +123,24 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
-                            <Spinner
-                                android:id="@+id/spinnerEstatusPet"
+                            <TextView
+                                android:id="@+id/estatusPet3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/icons" />
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_weight="2"
+                                android:textColor="@color/icons"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@+id/buttonCambiarEstatus"
+                                android:layout_width="70dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="cambiar" />
+
                         </LinearLayout>
 
                     </LinearLayout>

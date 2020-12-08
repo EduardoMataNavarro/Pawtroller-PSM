@@ -7,6 +7,20 @@
     android:background="@color/primary"
     tools:context=".CambiarEstatusActivity">
 
+    <Spinner
+        android:id="@+id/spinnerEstatusPet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="70dp"
+        android:backgroundTint="@color/icons"
+        android:defaultFocusHighlightEnabled="false"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCerrarVentana3"
         android:layout_width="40dp"
@@ -29,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="70dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="¿Qué le paso a tu mascota?"
@@ -38,7 +52,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerEstatusPet" />
 
     <EditText
         android:id="@+id/descestatusPet"
