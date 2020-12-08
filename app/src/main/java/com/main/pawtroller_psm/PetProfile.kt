@@ -7,13 +7,14 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
 import com.main.pawtroller_psm.Models.*
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_pet_profile.*
 import kotlinx.android.synthetic.main.fragment_pet_profile.view.*
 import kotlinx.android.synthetic.main.fragment_user_profile.*
@@ -38,10 +39,21 @@ class PetProfile : Fragment() {
     var listaMascotaUsuario: List<Pet> = listOf()
     var listaPetMedia: List<Pet_media> = listOf()
     var listaTipoMascota: List<TipoMascota> = listOf()
+    var listaMascotaEstatusPerdido: List<ResponseEstatusPet> = listOf()
+    var listaMascotaEstatusFallecida: List<ResponseEstatusPet> = listOf()
 
     var userString: String ?= null
-    var listaMascotaUsuarioString: String ?= null
-    var listaTipoMascotaString:  String ?= null
+    var listaMascotaUsuarioString: String = "[]"
+    var listaTipoMascotaString:  String = "[]"
+    var listaMascotaEstatusPerdidoString: String = "[]"
+    var listaMascotaEstatusfallecidaString: String = "[]"
+
+    var options: List<String> = listOf("Bien","Perdido","Fallecido")
+
+    var optionEstatusPet: Spinner?= null
+    var estatusPetId: String ?= null
+    var statusMascota: String?= null
+    var vistas: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,16 +72,54 @@ class PetProfile : Fragment() {
         userString= arguments?.getString("userString").toString()
         listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioString").toString()
         listaTipoMascotaString = arguments?.getString("listaTipoMascotaString").toString()
+        listaMascotaEstatusPerdidoString = arguments?.getString("listaMascotaEstatusPerdidoString").toString()
+        listaMascotaEstatusfallecidaString = arguments?.getString("listaMascotaEstatusfallecidaString").toString()
+
         var gson = Gson()
 
         listaTipoMascota = ArrayList(gson.fromJson(listaTipoMascotaString, Array<TipoMascota>::class.java).toList())
+
+        optionEstatusPet = view.findViewById<Spinner>(R.id.spinnerEstatusPet)
+
+        optionEstatusPet?.adapter =  ArrayAdapter(activity?.applicationContext!!,android.R.layout.simple_spinner_item, options) as SpinnerAdapter
+
+        optionEstatusPet?.onItemSelectedListener = object:
+            AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                estatusPetId= options[p2]
+                vistas++
+                if(vistas>1)
+                cambiarEstatusPet()
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+               // estatusPetId = "Bien"
+            }
+
+        }
+
+        if(!"[]".equals(listaMascotaEstatusPerdidoString)) {
+            listaMascotaEstatusPerdido =
+                ArrayList(
+                    gson.fromJson(listaMascotaEstatusPerdidoString, Array<ResponseEstatusPet>::class.java)
+                        .toList()
+                )
+        }
+
+        if(!"[]".equals(listaMascotaEstatusfallecidaString)) {
+            listaMascotaEstatusFallecida =
+                ArrayList(
+                    gson.fromJson(listaMascotaEstatusfallecidaString, Array<ResponseEstatusPet>::class.java)
+                        .toList()
+                )
+        }
 
         if(!"[]".equals(listaMascotaUsuarioString)) {
                  listaMascotaUsuario =
                 ArrayList(gson.fromJson(listaMascotaUsuarioString, Array<Pet>::class.java)
                     .toList())
 
-            // TODO validar si viene vacia la lista de mascotas
+
             actualizaVista(view)
 
             view.btnBack.setOnClickListener() {
@@ -90,6 +140,15 @@ class PetProfile : Fragment() {
         }
 
         return view
+    }
+
+    private fun cambiarEstatusPet() {
+        val iCrearPetActivity = Intent(context,CambiarEstatusActivity::class.java)
+        iCrearPetActivity.putExtra("listaTipoMascotaString",listaTipoMascotaString)
+        iCrearPetActivity.putExtra("userString",userString)
+        iCrearPetActivity.putExtra("petid",listaMascotaUsuario[idPet].id)
+        iCrearPetActivity.putExtra("estatus", statusMascota)
+        startActivity(iCrearPetActivity)
     }
 
     private fun agregarFotoPet() {
@@ -176,8 +235,36 @@ class PetProfile : Fragment() {
         }
         view.tipoPet.text = "Tipo de Mascota:" + tipo
         Picasso.get().load(listaMascotaUsuario[idPet].img_path).into(view.avatarPet)
+
+        asignaEstatusPet()
+        optionEstatusPet!!.setSelection(estatusPetId!!.toInt())
         // TODO cargar imagenes de la pet
         cargarImagenesPet()
+    }
+
+    private fun asignaEstatusPet() {
+        if(listaMascotaEstatusFallecida.size>0){
+            for (item in listaMascotaEstatusFallecida){
+                if(listaMascotaUsuario[idPet].id.equals(item.pet.id)){
+                    estatusPetId = "2"
+                    statusMascota= "fallecido"
+                    return
+                }
+            }
+        }
+
+        if(listaMascotaEstatusPerdido.size>0){
+            for (item in listaMascotaEstatusPerdido){
+                if(listaMascotaUsuario[idPet].id.equals(item.pet.id)){
+                    estatusPetId= "1"
+                    statusMascota="perdido"
+                    return
+                }
+            }
+        }
+
+        estatusPetId = "0"
+        statusMascota = "bien"
     }
 
     private fun cambiarPetAtras(size:Int,view: View) {
@@ -252,10 +339,10 @@ class PetProfile : Fragment() {
 
     private fun abrirCrearPet(userString:String) {
 
-                val iCrearPetActivity = Intent(context,CrearPetActivity::class.java)
-                iCrearPetActivity.putExtra("listaTipoMascotaString",listaTipoMascotaString)
-                iCrearPetActivity.putExtra("userString",userString)
-                startActivity(iCrearPetActivity)
+        val iCrearPetActivity = Intent(context,CrearPetActivity::class.java)
+        iCrearPetActivity.putExtra("listaTipoMascotaString",listaTipoMascotaString)
+        iCrearPetActivity.putExtra("userString",userString)
+        startActivity(iCrearPetActivity)
 
     }
 

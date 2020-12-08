@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.main.pawtroller_psm.Models.Pet
 import com.main.pawtroller_psm.Models.Pet_media
+import com.main.pawtroller_psm.Models.ResponseEstatusPet
 import kotlinx.android.synthetic.main.fragment_news_feed.*
 import kotlinx.android.synthetic.main.fragment_pet_profile.*
 
@@ -21,6 +22,11 @@ class NewsFeed : Fragment() {
 
     var listaMascotaUsuario: List<Pet> = listOf()
     var listaPetMedia: List<Pet_media> = listOf()
+    var listaMascotaEstatusPerdido: List<ResponseEstatusPet> = listOf()
+
+    var userString:String ?=null
+    var listaMascotaUsuarioString:String = "[]"
+    var listaMascotaEstatusPerdidoString: String = "[]"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,16 +42,23 @@ class NewsFeed : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_news_feed, container, false)
 
-        var userString:String = ""
-        var listaMascotaUsuarioString:String = ""
         userString= arguments?.getString("userString").toString()
         listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioString").toString()
+        listaMascotaEstatusPerdidoString= arguments?.getString("listaMascotaEstatusPerdidoString").toString()
         var gson = Gson()
 
         if(!"[]".equals(listaMascotaUsuarioString)) {
             listaMascotaUsuario =
                 ArrayList(
                     gson.fromJson(listaMascotaUsuarioString, Array<Pet>::class.java)
+                        .toList()
+                )
+        }
+
+        if(!"[]".equals(listaMascotaEstatusPerdidoString)) {
+            listaMascotaEstatusPerdido =
+                ArrayList(
+                    gson.fromJson(listaMascotaEstatusPerdidoString, Array<ResponseEstatusPet>::class.java)
                         .toList()
                 )
         }
@@ -79,7 +92,7 @@ class NewsFeed : Fragment() {
 
     private fun initRecycler() {
         recyclerViewPetPerdida.layoutManager = LinearLayoutManager (context,LinearLayoutManager.HORIZONTAL, false)
-        val adapter = RecyclerPetPerdidaAdapter(listaMascotaUsuario)
+        val adapter = RecyclerPetPerdidaAdapter(listaMascotaEstatusPerdido)
         recyclerViewPetPerdida.adapter = adapter
     }
 }

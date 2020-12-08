@@ -8,10 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.main.pawtroller_psm.Models.Pet
+import com.main.pawtroller_psm.Models.ResponseEstatusPet
 import com.main.pawtroller_psm.Models.TipoMascota
 import com.main.pawtroller_psm.Models.User
 import kotlinx.android.synthetic.main.activity_main_app.*
 import kotlinx.android.synthetic.main.fragment_pet_profile.*
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,17 +24,20 @@ class MainApp : AppCompatActivity(), Communicator{
     var listaMascotaUsuario : List<Pet> = listOf()
     var listaTipoMascota: List<TipoMascota> = listOf()
     var listaEstatusPet = listOf("bien","perdido","fallecido")
+    var listaMascotaEstatusPerdido: List<ResponseEstatusPet> = listOf()
+    var listaMascotaEstatusFallecida: List<ResponseEstatusPet> = listOf()
 
     var userString: String ?= null
-    var listaMascotaUsuarioString: String ?= null
-    var listaTipoMascotaString:  String ?= null
-    var listaEstatusPetString: String ?= null
+    var listaMascotaUsuarioString: String = "[]"
+    var listaTipoMascotaString:  String = "[]"
+    var listaEstatusPetString: String = "[]"
+    var listaMascotaEstatusPerdidoString: String = "[]"
+    var listaMascotaEstatusfallecidaString: String = "[]"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_app)
         supportActionBar?.hide()
-
 
         val datos: Intent = intent
         userString = datos.getStringExtra("userString")
@@ -81,15 +86,93 @@ class MainApp : AppCompatActivity(), Communicator{
                 listaMascotaUsuario = respuesta!![0]
                 listaMascotaUsuarioString = gson.toJson(listaMascotaUsuario)
 
-                obtenerTiposPets(frag)
-                //listaEstatusPet = obtenerEstatusPets()
-
-
+                obtenerMascotasPerdidas(frag)
             }
 
             override fun onFailure(call: Call<List<List<Pet>>>, t: Throwable) {
                 Toast.makeText(this@MainApp, t.message, Toast.LENGTH_LONG).show()
             }
+        })
+    }
+
+    private fun obtenerMascotasPerdidas(frag: Fragment) {
+
+        val service: Service = RestEngine.getRestEngine().create(Service::class.java)
+        val result: Call<List<List<ResponseEstatusPet>>> = service.consultarPetsPorEstatus("perdido")
+        var arrayMascotasPerdidas: List<List<ResponseEstatusPet>> = listOf()
+
+        result.enqueue(object : Callback<List<List<ResponseEstatusPet>>> {
+            override fun onResponse(
+                call: Call<List<List<ResponseEstatusPet>>>,response: Response<List<List<ResponseEstatusPet>>>) {
+                if (response.isSuccessful) {
+                    arrayMascotasPerdidas = response.body()!!
+                    listaMascotaEstatusPerdido = arrayMascotasPerdidas[0]
+                    var gson = Gson()
+                    listaMascotaEstatusPerdidoString = gson.toJson(listaMascotaEstatusPerdido)
+                    obtenerMascotasFallecidas(frag)
+                }else {
+                    obtenerMascotasFallecidas(frag)
+                    try {
+                        val jObjError = JSONObject(response.errorBody()!!.string())
+                        Toast.makeText(
+                            this@MainApp,
+                            jObjError.getJSONObject("errors").toString(),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            this@MainApp,
+                            e.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<List<ResponseEstatusPet>>>, t: Throwable) {
+                Toast.makeText(this@MainApp, "Error" + t.message, Toast.LENGTH_LONG).show()
+            }
+
+        })
+    }
+
+    private fun obtenerMascotasFallecidas(frag: Fragment) {
+        val service: Service = RestEngine.getRestEngine().create(Service::class.java)
+        val result: Call<List<List<ResponseEstatusPet>>> = service.consultarPetsPorEstatus("fallecido")
+        var arrayMascotasFallecidas: List<List<ResponseEstatusPet>> = listOf()
+
+        result.enqueue(object : Callback<List<List<ResponseEstatusPet>>> {
+            override fun onResponse(
+                call: Call<List<List<ResponseEstatusPet>>>,response: Response<List<List<ResponseEstatusPet>>>) {
+                if (response.isSuccessful) {
+                    arrayMascotasFallecidas = response.body()!!
+                    listaMascotaEstatusFallecida = arrayMascotasFallecidas[0]
+                    var gson = Gson()
+                    listaMascotaEstatusfallecidaString = gson.toJson(listaMascotaEstatusFallecida)
+                    obtenerTiposPets(frag)
+                }else {
+                    obtenerTiposPets(frag)
+                    try {
+                        val jObjError = JSONObject(response.errorBody()!!.string())
+                        Toast.makeText(
+                            this@MainApp,
+                            jObjError.getJSONObject("errors").toString(),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            this@MainApp,
+                            e.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<List<ResponseEstatusPet>>>, t: Throwable) {
+                Toast.makeText(this@MainApp, "Error" + t.message, Toast.LENGTH_LONG).show()
+            }
+
         })
     }
 
@@ -111,6 +194,8 @@ class MainApp : AppCompatActivity(), Communicator{
                 bundle.putString("userString", userString)
                 bundle.putString("listaMascotaUsuarioString", listaMascotaUsuarioString)
                 bundle.putString("listaTipoMascotaString",listaTipoMascotaString)
+                bundle.putString("listaMascotaEstatusPerdidoString",listaMascotaEstatusPerdidoString)
+                bundle.putString("listaMascotaEstatusfallecidaString",listaMascotaEstatusfallecidaString)
 
                 frag.arguments = bundle
 
@@ -153,6 +238,8 @@ class MainApp : AppCompatActivity(), Communicator{
         bundle.putString("userString",userString)
         bundle.putString("listaMascotaUsuarioString", listaMascotaUsuarioString)
         bundle.putString("listaTipoMascotaString",listaTipoMascotaString)
+        bundle.putString("listaMascotaEstatusPerdidoString",listaMascotaEstatusPerdidoString)
+        bundle.putString("listaMascotaEstatusfallecidaString",listaMascotaEstatusfallecidaString)
         frag.arguments = bundle
 
         val transaction = supportFragmentManager.beginTransaction()

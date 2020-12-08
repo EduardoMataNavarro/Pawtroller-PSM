@@ -34,3 +34,24 @@ data class RegistrarPet(
     val pettype: String,
     val petimg:String
 )
+
+data class ResponseEstatusPet(
+    val id: String,
+    val status: String,
+    val description: String,
+    val fecha_estatus: String,
+    val lat: String,
+    val long:String,
+    val created_at: String,
+    val updated_at: String,
+    val pet_id: String,
+    val cerca_de: String,
+    val pet:Pet
+)
+
+data class EstatusPet(
+    val petid: String,
+    val status: String,
+    val descripcion : String,
+    val fecha: String
+)

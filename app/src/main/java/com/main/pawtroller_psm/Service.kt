@@ -45,4 +45,12 @@ interface Service {
     @GET("api/pet/{id}/media")
     fun consultaImagenPorMascota(@Path("id")id: Int): Call<List<List<Pet_media>>>
 
+    @Headers("Accept:application/json")
+    @GET("api/pet/status/{estatus}")
+    fun consultarPetsPorEstatus(@Path("estatus") estatus: String): Call<List<List<ResponseEstatusPet>>>
+
+    @Headers("Accept:application/json")
+    @PUT("api/pet/status")
+    fun cambiarStatus(@Body estatusPet: EstatusPet):  Call<ResponseEstatusPet>
+
 }
