@@ -201,23 +201,6 @@
                             android:text="Mascotas"
                             android:textColor="@color/icons" />
 
-                        <Button
-                            android:id="@+id/btn_user_posts"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:layout_marginStart="1dp"
-                            android:layout_marginLeft="1dp"
-                            android:layout_marginTop="1dp"
-                            android:layout_marginEnd="1dp"
-                            android:layout_marginRight="1dp"
-                            android:layout_marginBottom="1dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/btn_border"
-                            android:backgroundTint="@color/accent"
-                            android:elevation="6dp"
-                            android:text="Publicaciones"
-                            android:textColor="@color/icons" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
