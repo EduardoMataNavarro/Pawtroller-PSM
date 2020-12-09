@@ -17,13 +17,14 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class MainApp : AppCompatActivity(), Communicator{
 
     var user: User ?=null
     var listaMascotaUsuario : List<Pet> = listOf()
     var listaTipoMascota: List<TipoMascota> = listOf()
-    var listaEstatusPet = listOf("bien","perdido","fallecido")
+    var listaEstatusPet = listOf("bien", "perdido", "fallecido")
     var listaMascotaEstatusPerdido: List<ResponseEstatusPet> = listOf()
     var listaMascotaEstatusFallecida: List<ResponseEstatusPet> = listOf()
 
@@ -40,11 +41,22 @@ class MainApp : AppCompatActivity(), Communicator{
     val fProfile = UserProfile()
 
     var fragmentActual:Fragment = NewsFeed()
+    val loadingDialog = LoadingDialog(this@MainApp)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_app)
         supportActionBar?.hide()
+
+        loadingDialog.startLoadingdialog()
+        val timer2 = Timer()
+        timer2.schedule(object : TimerTask() {
+            override fun run() {
+                loadingDialog.dismissDialog()
+                timer2.cancel() //this will cancel the timer of the system
+            }
+        }, 3000)
+
 
         val datos: Intent = intent
         userString = datos.getStringExtra("userString")
@@ -56,6 +68,7 @@ class MainApp : AppCompatActivity(), Communicator{
         }
     }
 
+
     fun adminTabBar(){
        // mostrarPetProfile(fHome)
 
@@ -63,25 +76,40 @@ class MainApp : AppCompatActivity(), Communicator{
 
         tabOptions.setOnNavigationItemSelectedListener { item ->
             when(item.itemId){
-                R.id.action_home->{mostrarFragment(fHome)}
-                R.id.action_pets->{mostrarFragment(fPets)}
-                R.id.action_forum->{mostrarFragment(fForum)}
-                R.id.action_profile->{mostrarFragment(fProfile)}
+                R.id.action_home -> {
+                    mostrarFragment(fHome)
+                }
+                R.id.action_pets -> {
+                    mostrarFragment(fPets)
+                }
+                R.id.action_forum -> {
+                    mostrarFragment(fForum)
+                }
+                R.id.action_profile -> {
+                    mostrarFragment(fProfile)
+                }
             }
             return@setOnNavigationItemSelectedListener true
         }
     }
 
-    fun mostrarPetProfile(frag:Fragment){
+    fun mostrarPetProfile(frag: Fragment){
 
         val service: Service = RestEngine.getRestEngine().create(Service::class.java)
         val result: Call<List<List<Pet>>> = service.consultaMascotasPorUsuario(user!!.id.toInt())
 
         result.enqueue(object : Callback<List<List<Pet>>> {
-            override fun onResponse(call: Call<List<List<Pet>>>,response: Response<List<List<Pet>>>) {
+            override fun onResponse(
+                call: Call<List<List<Pet>>>,
+                response: Response<List<List<Pet>>>
+            ) {
                 val respuesta = response.body()
-                if(respuesta!!.get(0).size<1) {
-                    Toast.makeText(this@MainApp, "Aun no has registrado ninguna mascota", Toast.LENGTH_LONG).show()
+                if (respuesta!!.get(0).size < 1) {
+                    Toast.makeText(
+                        this@MainApp,
+                        "Aun no has registrado ninguna mascota",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
                 var gson = Gson()
@@ -105,14 +133,16 @@ class MainApp : AppCompatActivity(), Communicator{
 
         result.enqueue(object : Callback<List<List<ResponseEstatusPet>>> {
             override fun onResponse(
-                call: Call<List<List<ResponseEstatusPet>>>,response: Response<List<List<ResponseEstatusPet>>>) {
+                call: Call<List<List<ResponseEstatusPet>>>,
+                response: Response<List<List<ResponseEstatusPet>>>
+            ) {
                 if (response.isSuccessful) {
                     arrayMascotasPerdidas = response.body()!!
                     listaMascotaEstatusPerdido = arrayMascotasPerdidas[0]
                     var gson = Gson()
                     listaMascotaEstatusPerdidoString = gson.toJson(listaMascotaEstatusPerdido)
                     obtenerMascotasFallecidas(frag)
-                }else {
+                } else {
                     obtenerMascotasFallecidas(frag)
                     try {
                         val jObjError = JSONObject(response.errorBody()!!.string())
@@ -145,14 +175,16 @@ class MainApp : AppCompatActivity(), Communicator{
 
         result.enqueue(object : Callback<List<List<ResponseEstatusPet>>> {
             override fun onResponse(
-                call: Call<List<List<ResponseEstatusPet>>>,response: Response<List<List<ResponseEstatusPet>>>) {
+                call: Call<List<List<ResponseEstatusPet>>>,
+                response: Response<List<List<ResponseEstatusPet>>>
+            ) {
                 if (response.isSuccessful) {
                     arrayMascotasFallecidas = response.body()!!
                     listaMascotaEstatusFallecida = arrayMascotasFallecidas[0]
                     var gson = Gson()
                     listaMascotaEstatusfallecidaString = gson.toJson(listaMascotaEstatusFallecida)
                     obtenerTiposPets(frag)
-                }else {
+                } else {
                     obtenerTiposPets(frag)
                     try {
                         val jObjError = JSONObject(response.errorBody()!!.string())
@@ -184,10 +216,13 @@ class MainApp : AppCompatActivity(), Communicator{
         var arrayMascotas: List<List<TipoMascota>> = listOf()
 
         result.enqueue(object : Callback<List<List<TipoMascota>>> {
-            override fun onResponse(call: Call<List<List<TipoMascota>>>, response: Response<List<List<TipoMascota>>>) {
+            override fun onResponse(
+                call: Call<List<List<TipoMascota>>>,
+                response: Response<List<List<TipoMascota>>>
+            ) {
                 arrayMascotas = response.body()!!
 
-                listaTipoMascota= arrayMascotas.get(0)
+                listaTipoMascota = arrayMascotas.get(0)
 
                 var gson = Gson()
                 listaTipoMascotaString = gson.toJson(listaTipoMascota)
@@ -195,9 +230,15 @@ class MainApp : AppCompatActivity(), Communicator{
                 val bundle = Bundle()
                 bundle.putString("userString", userString)
                 bundle.putString("listaMascotaUsuarioString", listaMascotaUsuarioString)
-                bundle.putString("listaTipoMascotaString",listaTipoMascotaString)
-                bundle.putString("listaMascotaEstatusPerdidoString",listaMascotaEstatusPerdidoString)
-                bundle.putString("listaMascotaEstatusfallecidaString",listaMascotaEstatusfallecidaString)
+                bundle.putString("listaTipoMascotaString", listaTipoMascotaString)
+                bundle.putString(
+                    "listaMascotaEstatusPerdidoString",
+                    listaMascotaEstatusPerdidoString
+                )
+                bundle.putString(
+                    "listaMascotaEstatusfallecidaString",
+                    listaMascotaEstatusfallecidaString
+                )
 
                 frag.arguments = bundle
 
@@ -222,10 +263,17 @@ class MainApp : AppCompatActivity(), Communicator{
         val result: Call<List<List<Pet>>> = service.consultaMascotasPorUsuario(user!!.id.toInt())
 
         result.enqueue(object : Callback<List<List<Pet>>> {
-            override fun onResponse(call: Call<List<List<Pet>>>,response: Response<List<List<Pet>>>) {
+            override fun onResponse(
+                call: Call<List<List<Pet>>>,
+                response: Response<List<List<Pet>>>
+            ) {
                 val respuesta = response.body()
-                if(respuesta!!.get(0).size<1) {
-                    Toast.makeText(this@MainApp, "Aun no has registrado ninguna mascota", Toast.LENGTH_LONG).show()
+                if (respuesta!!.get(0).size < 1) {
+                    Toast.makeText(
+                        this@MainApp,
+                        "Aun no has registrado ninguna mascota",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
                 var gson = Gson()
                 listaMascotaUsuario = respuesta!![0]
@@ -238,14 +286,14 @@ class MainApp : AppCompatActivity(), Communicator{
         })
     }
 
-    fun mostrarFragment(frag:Fragment){
+    fun mostrarFragment(frag: Fragment){
         obtenerPets()
         val bundle = Bundle()
-        bundle.putString("userString",userString)
+        bundle.putString("userString", userString)
         bundle.putString("listaMascotaUsuarioString", listaMascotaUsuarioString)
-        bundle.putString("listaTipoMascotaString",listaTipoMascotaString)
-        bundle.putString("listaMascotaEstatusPerdidoString",listaMascotaEstatusPerdidoString)
-        bundle.putString("listaMascotaEstatusfallecidaString",listaMascotaEstatusfallecidaString)
+        bundle.putString("listaTipoMascotaString", listaTipoMascotaString)
+        bundle.putString("listaMascotaEstatusPerdidoString", listaMascotaEstatusPerdidoString)
+        bundle.putString("listaMascotaEstatusfallecidaString", listaMascotaEstatusfallecidaString)
         frag.arguments = bundle
 
         fragmentActual= frag
@@ -255,9 +303,9 @@ class MainApp : AppCompatActivity(), Communicator{
         transaction.commit()
     }
 
-    override fun passDataCom(userString:String) {
+    override fun passDataCom(userString: String) {
         val bundle = Bundle()
-        bundle.putString("message",userString)
+        bundle.putString("message", userString)
 
     }
 

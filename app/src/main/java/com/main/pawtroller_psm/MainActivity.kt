@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity(){
     var emailTxt:TextView?=null
     var passwordTxt:TextView?=null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         Thread.sleep(1000)
@@ -29,6 +30,8 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
+
+
 
         emailTxt= findViewById(R.id.emailLogin)
         passwordTxt= findViewById(R.id.passwordLogin)
@@ -83,6 +86,7 @@ class MainActivity : AppCompatActivity(){
                     val respuesta = response.body()
                     if (response.isSuccessful) {
                         if("success".equals(respuesta!!.message)) {
+
                             var gson = Gson()
                             var userString = gson.toJson(respuesta!!.user[0])
                             val iMainApp = Intent(applicationContext, MainApp::class.java)
