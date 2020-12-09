@@ -3,6 +3,7 @@ package com.main.pawtroller_psm
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ class MainActivity2 : AppCompatActivity() {
     var passRegTxt: TextView?=null
     var confirpassRegTxt: TextView?=null
     var birthdateTxt: TextView?=null
+    var boton_registrar:Button?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -38,6 +40,7 @@ class MainActivity2 : AppCompatActivity() {
         passRegTxt= findViewById(R.id.passRegTxt)
         confirpassRegTxt= findViewById(R.id.confirpassRegTxt)
         birthdateTxt= findViewById(R.id.birthdateTxt)
+        boton_registrar = findViewById(R.id.boton_registrar)
 
         ocultarTeclado()
         iniciarSesion()
@@ -58,7 +61,7 @@ class MainActivity2 : AppCompatActivity() {
     }
 
     fun iniciarRegistro(){
-        boton_registrar.setOnClickListener(){
+        boton_registrar?.setOnClickListener(){
             registrar()
         }
     }

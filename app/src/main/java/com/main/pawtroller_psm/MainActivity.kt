@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(){
         val email:String = emailTxt!!.text.toString()
         val password:String = passwordTxt!!.text.toString()
 
-        val datosCorrectos:Boolean =validaDatos(email,password)
+        val datosCorrectos:Boolean =true
         if(datosCorrectos) {
             val userLogin = UserLogin(email, password)
 

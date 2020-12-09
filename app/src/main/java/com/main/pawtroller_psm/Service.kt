@@ -57,4 +57,22 @@ interface Service {
     @POST("api/pet/status")
     fun altaStatus(@Body estatusPet: EstatusPet):  Call<ResponseEstatusPet>
 
+
+    @POST("api/post/create")
+    fun createPost(@Body postData: PostCreationData): Call <List<Post>>
+
+    @GET("api/post")
+    fun getPostsList(): Call <List<List<Post>>>
+
+    @GET("api/post/{id}")
+    fun getPostById(@Path("id")id:Int): Call<List<Post>>
+
+    @GET("api/post/{id}/comments")
+    fun getPostComments(@Path("id")id:Int): Call<List<List<Comment>>>
+
+    @GET("api/post_category")
+    fun getPostCategoriesList(): Call<List<List<PostCategory>>>
+
+    @POST("api/post/comment")
+    fun createComment(@Body commentData: CommentCreationData): Call <List<Comment>>
 }

@@ -22,6 +22,7 @@
         <activity android:name=".CrearPetActivity" />
         <activity android:name=".MainActivity2" />
         <activity android:name=".MainApp" />
+        <activity android:name=".CreatePostActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/SplashTheme"

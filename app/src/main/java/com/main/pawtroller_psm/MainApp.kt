@@ -1,7 +1,11 @@
 package com.main.pawtroller_psm
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -11,6 +15,11 @@ import com.main.pawtroller_psm.datos.DatosUsuario
 import com.main.pawtroller_psm.models.Pet
 import com.main.pawtroller_psm.models.ResponseEstatusPet
 import com.main.pawtroller_psm.models.TipoMascota
+import com.main.pawtroller_psm.Adapters.PostRecyclerAdapter
+import com.main.pawtroller_psm.Models.Comment
+import com.main.pawtroller_psm.Models.Pet
+import com.main.pawtroller_psm.Models.Post
+import com.main.pawtroller_psm.Models.User
 import kotlinx.android.synthetic.main.activity_main_app.*
 import kotlinx.android.synthetic.main.fragment_pet_profile.*
 import org.json.JSONObject
@@ -18,8 +27,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import java.io.Serializable
+import java.lang.Error
+import kotlin.math.log
 
-class MainApp : AppCompatActivity(), Communicator{
+class MainApp : AppCompatActivity(), Communicator,
+    PostRecyclerAdapter.PostRecyclerClickEventHandler {
 
     var datosUsuario = DatosUsuario()
     var datosMascota = DatosMascota()
@@ -73,9 +86,7 @@ class MainApp : AppCompatActivity(), Communicator{
                 R.id.action_home -> {
                     mostrarFragment(fHome)
                 }
-                R.id.action_pets -> {
-                    mostrarFragment(fPets)
-                }
+                R.id.action_forum->{mostrarPostListview(fForum,userString)}
                 R.id.action_forum -> {
                     mostrarFragment(fForum)
                 }
@@ -277,6 +288,36 @@ class MainApp : AppCompatActivity(), Communicator{
         })
     }
 
+    fun mostrarPostListview(frag:Fragment, userString:String){
+        val service:Service = RestEngine.getRestEngine().create(Service::class.java)
+        val result:Call<List<List<Post>>> = service.getPostsList()
+
+        result.enqueue(object:Callback<List<List<Post>>> {
+            override fun onResponse(call:Call<List<List<Post>>>, response:Response<List<List<Post>>>) {
+                try {
+                    val respuesta = response.body()
+                    val bundle = Bundle()
+                    var postsList:List<Post> = respuesta!![0]
+                    var postsListString = Gson().toJson(postsList)
+                    bundle.putString("userString",userString)
+                    bundle.putString("PostsList", postsListString)
+                    frag.arguments = bundle
+
+                    val transaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.frame, frag)
+                    transaction.commit()
+                } catch (err:Error){
+                    Toast.makeText(this@MainApp, err.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<List<Post>>>, t: Throwable) {
+                Toast.makeText(this@MainApp, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    fun mostrarFragment(frag:Fragment,userString: String){
     fun mostrarFragment(frag: Fragment){
         obtenerPets()
         val bundle = Bundle()
@@ -297,6 +338,55 @@ class MainApp : AppCompatActivity(), Communicator{
         val bundle = Bundle()
         bundle.putString("message", userString)
 
+    }
+
+    override fun ShowPostFragment(holder: View, postId:Int, userString: String) {
+        val service:Service = RestEngine.getRestEngine().create(Service::class.java)
+        val result:Call<List<Post>> = service.getPostById(postId)
+
+        result.enqueue(object : Callback<List<Post>> {
+            override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
+                try {
+                    val respuesta = response.body()
+                    var post:Post = respuesta!![0]
+                    var postString = Gson().toJson(post)
+
+                    val bundle = Bundle()
+                    bundle.putString("userString", userString)
+                    bundle.putString("PostData", postString)
+
+                    val commentService:Service = RestEngine.getRestEngine().create(Service::class.java)
+                    val commentsResult:Call<List<List<Comment>>> = commentService.getPostComments(postId)
+
+                    commentsResult.enqueue(object:Callback<List<List<Comment>>> {
+                        override fun onResponse(call: Call<List<List<Comment>>>,response: Response<List<List<Comment>>>) {
+                            var commentsResponse = response.body()
+                            var comments: List<Comment> = commentsResponse!![0]
+                            var commentsList = Gson().toJson(comments)
+                            bundle.putString("CommentsList", commentsList)
+
+                            val postDetailView = PostDetailview()
+                            postDetailView.arguments = bundle
+
+                            val transaction = supportFragmentManager.beginTransaction()
+                            transaction.replace(R.id.frame, postDetailView)
+                            transaction.commit()
+                            transaction.addToBackStack(null)
+                        }
+
+                        override fun onFailure(call: Call<List<List<Comment>>>, t: Throwable) {
+                            Toast.makeText(this@MainApp, t.message, Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                } catch (err:Error){
+                    Log.println(Log.ERROR, "comentarios y posts ", err.message.toString())
+                }
+            }
+            override fun onFailure(call: Call<List<Post>>, t: Throwable) {
+                Toast.makeText(this@MainApp, t.message, Toast.LENGTH_LONG).show()
+            }
+
+        })
     }
 
     fun ocultarTeclado(){
