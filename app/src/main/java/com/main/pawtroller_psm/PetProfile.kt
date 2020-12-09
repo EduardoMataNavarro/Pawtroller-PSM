@@ -218,25 +218,30 @@ class PetProfile : Fragment() {
     }
 
     public fun actualizaVista(view: View) {
-        view.nombrePet.text = datosMascota.listaMascotaUsuario[idPet].name
-        view.edadPet.text ="Edad: " +datosMascota.listaMascotaUsuario[idPet].age
-        view.descripcionPet.text = "Descripción: " +datosMascota.listaMascotaUsuario[idPet].description
-        view.fecNacPet.text = "Fecha de nacimiento: " + datosMascota.listaMascotaUsuario[idPet].birthdate
-        view.nicknamePet.text = "Apodo: " + datosMascota.listaMascotaUsuario[idPet].nickname
-        var tipo: String = ""
-        for ( item in datosMascota.listaTipoMascota){
-            if(datosMascota.listaMascotaUsuario[idPet].type_id.equals(item.id)) {
-                tipo = item.name
-                view.tipoPet.text = "Tipo de Mascota:" + tipo
-                break
+        if(datosMascota.listaMascotaUsuario!=null && datosMascota.listaMascotaUsuario.size>0 ) {
+            view.nombrePet.text = datosMascota.listaMascotaUsuario[idPet].name
+            view.edadPet.text = "Edad: " + datosMascota.listaMascotaUsuario[idPet].age
+            view.descripcionPet.text =
+                "Descripción: " + datosMascota.listaMascotaUsuario[idPet].description
+            view.fecNacPet.text =
+                "Fecha de nacimiento: " + datosMascota.listaMascotaUsuario[idPet].birthdate
+            view.nicknamePet.text = "Apodo: " + datosMascota.listaMascotaUsuario[idPet].nickname
+            var tipo: String = ""
+            for (item in datosMascota.listaTipoMascota) {
+                if (datosMascota.listaMascotaUsuario[idPet].type_id.equals(item.id)) {
+                    tipo = item.name
+                    view.tipoPet.text = "Tipo de Mascota:" + tipo
+                    break
+                }
             }
-        }
-        view.tipoPet.text = "Tipo de Mascota:" + tipo
-        Picasso.get().load(datosMascota.listaMascotaUsuario[idPet].img_path).into(view.avatarPet)
+            view.tipoPet.text = "Tipo de Mascota:" + tipo
+            Picasso.get().load(datosMascota.listaMascotaUsuario[idPet].img_path)
+                .into(view.avatarPet)
 
-        asignaEstatusPet()
-        view.estatusPet3.text = statusMascota
-        cargarImagenesPet()
+            asignaEstatusPet()
+            view.estatusPet3.text = statusMascota
+            cargarImagenesPet()
+        }
     }
 
     private fun asignaEstatusPet() {
