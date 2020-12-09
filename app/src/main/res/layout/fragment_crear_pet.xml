@@ -44,7 +44,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/primary_light"
                 android:textSize="36sp"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imageView2"
