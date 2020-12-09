@@ -15,6 +15,6 @@ data class Comment(
 
 data class CommentCreationData(
     val comment:String,
-    val user_id: Int,
-    val post_id: Int
+    val userid: Int,
+    val postid: Int
 )

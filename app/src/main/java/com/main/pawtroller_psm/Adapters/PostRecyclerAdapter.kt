@@ -17,11 +17,11 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.post_card.view.*
 import java.lang.Error
 
-class PostRecyclerAdapter (private var PostsList:List<Post>, private var context: Context?) :
+class PostRecyclerAdapter (private var PostsList:List<Post>, private var context: Context?, private var userString:String) :
     RecyclerView.Adapter<PostRecyclerAdapter.ViewHolder>(){
 
     interface PostRecyclerClickEventHandler {
-        fun ShowPostFragment(holder: View, postId:Int)
+        fun ShowPostFragment(holder: View, postId:Int, userString:String)
     }
     private val clickHandler:PostRecyclerClickEventHandler = context as PostRecyclerClickEventHandler
 
@@ -55,7 +55,7 @@ class PostRecyclerAdapter (private var PostsList:List<Post>, private var context
             holder.postTitle.text = PostsList[position].title
             holder.postContent.text = PostsList[position].content
             holder.postDate.text = PostsList[position].created_at.toString()
-            holder.itemView.setOnClickListener {clickHandler.ShowPostFragment(it, PostsList[position].id.toInt())}
+            holder.itemView.setOnClickListener {clickHandler.ShowPostFragment(it, PostsList[position].id.toInt(), userString)}
     } catch (err:Error){
             Log.println(Log.ERROR, "Error BindViewHolder", err.toString())
         }

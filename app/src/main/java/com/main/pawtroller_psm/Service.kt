@@ -25,7 +25,7 @@ interface Service {
     fun consultaMascotasPorUsuario(@Path("id")id: Int): Call<List<List<Pet>>>
 
     @POST("api/post/create")
-    fun createPostEntry(@Body postData: PostCreationData): Call <List<Post>>
+    fun createPost(@Body postData: PostCreationData): Call <List<Post>>
 
     @GET("api/post")
     fun getPostsList(): Call <List<List<Post>>>
@@ -38,4 +38,7 @@ interface Service {
 
     @GET("api/post_category")
     fun getPostCategoriesList(): Call<List<List<PostCategory>>>
+
+    @POST("api/post/comment")
+    fun createComment(@Body commentData: CommentCreationData): Call <List<Comment>>
 }

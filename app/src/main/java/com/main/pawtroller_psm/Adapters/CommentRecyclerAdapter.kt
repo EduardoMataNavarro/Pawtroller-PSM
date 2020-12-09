@@ -28,7 +28,9 @@ class CommentRecyclerAdapter (private var CommentsList:List<Comment>) :
             }
         }
     }
-
+    fun updateData(newData : List<Comment>){
+        this.CommentsList = newData
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.comment_card, parent, false)
         return ViewHolder(view)

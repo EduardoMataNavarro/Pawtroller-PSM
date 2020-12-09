@@ -14,8 +14,12 @@ import com.google.gson.Gson
 import com.main.pawtroller_psm.Adapters.PostRecyclerAdapter
 import com.main.pawtroller_psm.Models.Pet
 import com.main.pawtroller_psm.Models.Post
+import com.main.pawtroller_psm.Models.PostCategory
 import kotlinx.android.synthetic.main.fragment_post_listview.*
 import kotlinx.android.synthetic.main.fragment_post_listview.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,20 +59,41 @@ class PostListview : Fragment() {
         var PostsList:List<Post> = Gson().fromJson(postsList, Array<Post>::class.java).toList() as ArrayList<Post>
         var recycler = rootView.post_recyclerView
         var createPostButton:Button = rootView.button_create_post
-        createPostButton.setOnClickListener { createPostView(userString) }
+        createPostButton.setOnClickListener { createPostActivity(userString) }
 
-        recycler.adapter = PostRecyclerAdapter(PostsList, context)
+        recycler.adapter = PostRecyclerAdapter(PostsList, context, userString)
         recycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL ,false)
 
         return rootView
     }
 
-    fun createPostView(userString:String){
+    fun createPostActivity(userString:String){
         try {
-            /* No se llama un service, aquí se manda a llamar al Activity de crear post desde un intent */
             var createPostIntent = Intent(context, CreatePostActivity::class.java)
             createPostIntent.putExtra("userString", userString)
-            startActivity(createPostIntent)
+
+            val service:Service = RestEngine.getRestEngine().create(Service::class.java)
+            var result: Call<List<List<PostCategory>>> = service.getPostCategoriesList()
+            result.enqueue(object : Callback<List<List<PostCategory>>> {
+
+                override fun onResponse(call: Call<List<List<PostCategory>>>, response: Response<List<List<PostCategory>>>) {
+                    try {
+                        val respuesta = response.body()
+                        val categoriesList:List<PostCategory> = respuesta!![0]
+                        var categoriesListString:String = Gson().toJson(categoriesList)
+
+                        createPostIntent.putExtra("categoriesList", categoriesListString)
+                        startActivity(createPostIntent)
+
+                    } catch (err:Error) {
+                        Toast.makeText(context, "Err: ${err.message.toString()}", Toast.LENGTH_LONG).show()
+                    }
+                }
+                override fun onFailure(call: Call<List<List<PostCategory>>>, t: Throwable) {
+                    Toast.makeText(context, "Error: ${t.message.toString()}", Toast.LENGTH_LONG).show()
+                }
+
+            })
         } catch (err:Error) {
             Toast.makeText(this.context, "Error: ${err.message.toString()}", Toast.LENGTH_LONG).show()
         }

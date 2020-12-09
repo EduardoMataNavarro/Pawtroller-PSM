@@ -143,7 +143,7 @@ class MainApp : AppCompatActivity(), Communicator,
 
     }
 
-    override fun ShowPostFragment(holder: View, postId:Int) {
+    override fun ShowPostFragment(holder: View, postId:Int, userString: String) {
         val service:Service = RestEngine.getRestEngine().create(Service::class.java)
         val result:Call<List<Post>> = service.getPostById(postId)
 
@@ -155,6 +155,7 @@ class MainApp : AppCompatActivity(), Communicator,
                     var postString = Gson().toJson(post)
 
                     val bundle = Bundle()
+                    bundle.putString("userString", userString)
                     bundle.putString("PostData", postString)
 
                     val commentService:Service = RestEngine.getRestEngine().create(Service::class.java)

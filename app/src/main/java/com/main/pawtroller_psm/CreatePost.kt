@@ -1,5 +1,6 @@
 package com.main.pawtroller_psm
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,10 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import com.google.gson.Gson
 import com.main.pawtroller_psm.Models.PostCategory
+import com.main.pawtroller_psm.Models.TipoMascota
 import com.main.pawtroller_psm.Models.User
 import kotlinx.android.synthetic.main.fragment_create_post.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,6 +66,31 @@ class CreatePost : Fragment() {
 
 
         return rootView
+    }
+
+    fun OpenCreatePost(userString:String){
+
+        val service: Service = RestEngine.getRestEngine().create(Service::class.java)
+        val result: Call<List<List<TipoMascota>>> = service.obtenerMascotas()
+        var arrayMascotas: List<List<TipoMascota>> = listOf()
+
+        result.enqueue(object : Callback<List<List<TipoMascota>>> {
+            override fun onResponse(call: Call<List<List<TipoMascota>>>, response: Response<List<List<TipoMascota>>>) {
+                arrayMascotas = response.body()!!
+                var gson = Gson()
+                var listaMascostaString = gson.toJson(arrayMascotas[0])
+
+                val iCrearPetActivity = Intent(context,CrearPetActivity::class.java)
+                iCrearPetActivity.putExtra("listaMascostaString",listaMascostaString)
+                iCrearPetActivity.putExtra("userString",userString)
+                startActivity(iCrearPetActivity)
+            }
+
+            override fun onFailure(call: Call<List<List<TipoMascota>>>, t: Throwable) {
+                Toast.makeText(context, "Error" + t.message, Toast.LENGTH_LONG).show()
+            }
+
+        })
     }
 
     companion object {

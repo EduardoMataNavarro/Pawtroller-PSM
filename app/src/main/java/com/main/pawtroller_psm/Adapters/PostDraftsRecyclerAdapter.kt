@@ -25,8 +25,8 @@ class PostDraftsRecyclerAdapter (private var PostDraftsList:List<PostCreationDat
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-            val userName: TextView = itemView.findViewById(R.id.comment_username)
-            val userImage: ImageView = itemView.findViewById(R.id.comment_userimage)
+            val userName: TextView = itemView.findViewById(R.id.post_card_username)
+            val userImage: ImageView = itemView.findViewById(R.id.post_card_userimage)
             val timestamp: TextView = itemView.findViewById(R.id.post_card_date)
             val title: TextView = itemView.findViewById(R.id.post_card_title)
             val content: TextView = itemView.findViewById(R.id.post_card_content)
@@ -39,6 +39,9 @@ class PostDraftsRecyclerAdapter (private var PostDraftsList:List<PostCreationDat
             }
         }
 
+        fun updateData(updatedData:List<PostCreationData>){
+            this.PostDraftsList = updatedData
+        }
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.post_card, parent, false)
             return ViewHolder(view)
