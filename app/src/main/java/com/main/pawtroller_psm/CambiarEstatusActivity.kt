@@ -3,18 +3,21 @@ package com.main.pawtroller_psm
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.main.pawtroller_psm.Models.EstatusPet
 import com.main.pawtroller_psm.Models.ResponseEstatusPet
 import kotlinx.android.synthetic.main.activity_cambiar_estatus.*
+import kotlinx.android.synthetic.main.fragment_sign_in.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-var desccripcionTxt: TextView ? = null
+    var desccripcionTxt: TextView ? = null
     var fechaTxt: TextView ?= null
+    var lugarTxt: TextView ?= null
 
     var estatusPet: EstatusPet ?= null
     var petid: String ?= null
@@ -34,6 +37,7 @@ class CambiarEstatusActivity : AppCompatActivity() {
 
         desccripcionTxt = findViewById(R.id.descestatusPet)
         fechaTxt = findViewById(R.id.fechaEstatusPet)
+        lugarTxt = findViewById(R.id.lugarEstatusPet)
 
         optionEstatusPet = findViewById<Spinner>(R.id.spinnerEstatusPet)
 
@@ -53,6 +57,7 @@ class CambiarEstatusActivity : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
+        ocultarTeclado()
 
         fabCerrarVentana3.setOnClickListener(){
             finish()
@@ -63,53 +68,73 @@ class CambiarEstatusActivity : AppCompatActivity() {
         }
     }
 
+    fun ocultarTeclado(){
+        btnAgregarStatus?.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) hideSoftKeyboard()
+        }
+    }
+
+    fun hideSoftKeyboard() {
+        val inputMethodManager: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+    }
+
     private fun agregarStatus() {
 
-            obtenerDatosEstatusPet()
-            val service: Service = RestEngine.getRestEngine().create(Service::class.java)
-            val result: Call<ResponseEstatusPet> = service.cambiarStatus(estatusPet!!)
+            if(obtenerDatosEstatusPet()) {
+                val service: Service = RestEngine.getRestEngine().create(Service::class.java)
+                val result: Call<ResponseEstatusPet> = service.cambiarStatus(estatusPet!!)
 
-            result.enqueue(object : Callback<ResponseEstatusPet> {
-                override fun onResponse(
-                    call: Call<ResponseEstatusPet>,
-                    response: Response<ResponseEstatusPet>
-                ) {
-                    val respuesta = response.body()
-                    if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@CambiarEstatusActivity,
-                            "Estatus actualizado con éxito",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        finish()
-                    } else {
-                        try {
-                            val jObjError = JSONObject(response.errorBody()!!.string())
+                result.enqueue(object : Callback<ResponseEstatusPet> {
+                    override fun onResponse(
+                        call: Call<ResponseEstatusPet>,
+                        response: Response<ResponseEstatusPet>
+                    ) {
+                        val respuesta = response.body()
+                        if (response.isSuccessful) {
                             Toast.makeText(
                                 this@CambiarEstatusActivity,
-                                jObjError.getJSONObject("errors").toString(),
+                                "Estatus actualizado con éxito",
                                 Toast.LENGTH_LONG
                             ).show()
                             finish()
-                        } catch (e: Exception) {
-                            Toast.makeText(
-                                this@CambiarEstatusActivity,
-                                e.message,
-                                Toast.LENGTH_LONG
-                            ).show()
+                        } else {
+                            try {
+                                val jObjError = JSONObject(response.errorBody()!!.string())
+                                Toast.makeText(
+                                    this@CambiarEstatusActivity,
+                                    jObjError.getJSONObject("errors").toString(),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                finish()
+                            } catch (e: Exception) {
+                                Toast.makeText(
+                                    this@CambiarEstatusActivity,
+                                    e.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<ResponseEstatusPet>, t: Throwable) {
-                    Toast.makeText(this@CambiarEstatusActivity, t.message, Toast.LENGTH_LONG).show()
-                }
-            })
+                    override fun onFailure(call: Call<ResponseEstatusPet>, t: Throwable) {
+                        Toast.makeText(this@CambiarEstatusActivity, t.message, Toast.LENGTH_LONG)
+                            .show()
+                    }
+                })
+            }
     }
 
-    private fun obtenerDatosEstatusPet() {
+    private fun obtenerDatosEstatusPet(): Boolean {
         val descripcion = desccripcionTxt!!.text.toString()
-        val fecha = fechaEstatusPet!!.text.toString()
-        estatusPet = EstatusPet(petid!!,estatus!!,descripcion,fecha)
+        val fecha = fechaTxt!!.text.toString()
+        val cercade = lugarTxt!!.text.toString()
+        if("".equals(descripcion) || "".equals(fecha) || "".equals(cercade)){
+            Toast.makeText(this@CambiarEstatusActivity, "Completa todos los campos", Toast.LENGTH_LONG).show()
+            return false
+        }
+        estatusPet = EstatusPet(petid!!,estatus!!,descripcion,fecha,cercade,"","")
+        return true
     }
 }

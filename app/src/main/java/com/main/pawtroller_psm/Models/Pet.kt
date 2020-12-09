@@ -53,5 +53,8 @@ data class EstatusPet(
     val petid: String,
     val status: String,
     val descripcion : String,
-    val fecha: String
+    val fecha: String,
+    var cercade:String,
+    val lat:String,
+    val long: String
 )

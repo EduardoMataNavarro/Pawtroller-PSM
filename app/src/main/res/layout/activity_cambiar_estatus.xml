@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="70dp"
         android:backgroundTint="@color/icons"
         android:defaultFocusHighlightEnabled="false"
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="70dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="¿Qué le paso a tu mascota?"
@@ -64,6 +64,7 @@
         android:ems="10"
         android:gravity="center|center_horizontal|center_vertical"
         android:inputType="textPersonName"
+        android:singleLine="true"
         android:textAlignment="center"
         android:textColor="@color/icons"
         android:textStyle="bold"
@@ -97,13 +98,51 @@
         android:layout_marginEnd="70dp"
         android:ems="10"
         android:gravity="center|center_horizontal|center_vertical"
+        android:hint="1900-31-01"
         android:inputType="textPersonName"
+        android:singleLine="true"
         android:textAlignment="center"
         android:textColor="@color/icons"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="70dp"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="¿Donde?"
+        android:textAlignment="center"
+        android:textColor="@color/icons"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fechaEstatusPet" />
+
+    <EditText
+        android:id="@+id/lugarEstatusPet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="70dp"
+        android:ems="10"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:inputType="textPersonName"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textColor="@color/icons"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
     <Button
         android:id="@+id/btnAgregarStatus"
@@ -117,6 +156,7 @@
         android:textColor="@color/icons"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fechaEstatusPet" />
+        app:layout_constraintTop_toBottomOf="@+id/lugarEstatusPet" />
 </androidx.constraintlayout.widget.ConstraintLayout>

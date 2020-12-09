@@ -128,7 +128,7 @@ class CrearPetActivity2 : AppCompatActivity() , UploadRequestBody.UploadCallback
     }
 
     private fun registraEstatusPet(petid: String) {
-        var estatusPetNueva = EstatusPet(petid,"Bien","","")
+        var estatusPetNueva = EstatusPet(petid,"Bien","","","","","")
         val service: Service = RestEngine.getRestEngine().create(Service::class.java)
         val result: Call<ResponseEstatusPet> = service.altaStatus(estatusPet!!)
 

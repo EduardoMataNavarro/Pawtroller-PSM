@@ -53,6 +53,7 @@ class PetProfile : Fragment() {
     var statusMascota: String?= null
     var vistas : Int = 0
     var seleccion: Int =0
+    var view1: View ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +67,7 @@ class PetProfile : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_pet_profile, container, false)
+        view1 = inflater.inflate(R.layout.fragment_pet_profile, container, false)
 
         userString= arguments?.getString("userString").toString()
         listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioString").toString()
@@ -76,13 +77,61 @@ class PetProfile : Fragment() {
 
         var gson = Gson()
 
-        listaTipoMascota = ArrayList(gson.fromJson(listaTipoMascotaString, Array<TipoMascota>::class.java).toList())
 
+        if(!"[]".equals(listaMascotaUsuarioString)) {
+                 listaMascotaUsuario =
+                ArrayList(
+                    gson.fromJson(listaMascotaUsuarioString, Array<Pet>::class.java)
+                        .toList()
+                )
+
+
+            actualizaVista(view1!!)
+
+            view1!!.btnBack.setOnClickListener() {
+                cambiarPetAtras(listaMascotaUsuario.size, view1!!)
+            }
+
+            view1!!.btnFwd.setOnClickListener() {
+                cambiarPetAdelante(listaMascotaUsuario.size, view1!!)
+            }
+        }
+
+        view1!!.buttonCambiarEstatus.setOnClickListener(){
+            cambiarEstatusPet()
+        }
+        view1!!.fabCrearPet.setOnClickListener() {
+            abrirCrearPet(userString!!)
+        }
+
+        view1!!.fabCargarFotoPet.setOnClickListener(){
+            agregarFotoPet()
+        }
+
+        return view1
+    }
+
+    private fun obtenerParametros() {
+        userString= arguments?.getString("userString").toString()
+        listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioString").toString()
+        listaTipoMascotaString = arguments?.getString("listaTipoMascotaString").toString()
+        listaMascotaEstatusPerdidoString = arguments?.getString("listaMascotaEstatusPerdidoString").toString()
+        listaMascotaEstatusfallecidaString = arguments?.getString("listaMascotaEstatusfallecidaString").toString()
+
+        var gson = Gson()
+        if(!"[]".equals(listaTipoMascota)) {
+            listaTipoMascota = ArrayList(
+                gson.fromJson(listaTipoMascotaString, Array<TipoMascota>::class.java).toList()
+            )
+        }
 
         if(!"[]".equals(listaMascotaEstatusPerdidoString)) {
             listaMascotaEstatusPerdido =
                 ArrayList(
-                    gson.fromJson(listaMascotaEstatusPerdidoString, Array<ResponseEstatusPet>::class.java)
+                    gson.fromJson(
+                        listaMascotaEstatusPerdidoString,
+                        Array<ResponseEstatusPet>::class.java
+                    )
                         .toList()
                 )
         }
@@ -90,47 +139,28 @@ class PetProfile : Fragment() {
         if(!"[]".equals(listaMascotaEstatusfallecidaString)) {
             listaMascotaEstatusFallecida =
                 ArrayList(
-                    gson.fromJson(listaMascotaEstatusfallecidaString, Array<ResponseEstatusPet>::class.java)
+                    gson.fromJson(
+                        listaMascotaEstatusfallecidaString,
+                        Array<ResponseEstatusPet>::class.java
+                    )
                         .toList()
                 )
         }
 
         if(!"[]".equals(listaMascotaUsuarioString)) {
-                 listaMascotaUsuario =
-                ArrayList(gson.fromJson(listaMascotaUsuarioString, Array<Pet>::class.java)
-                    .toList())
-
-
-            actualizaVista(view)
-
-            view.btnBack.setOnClickListener() {
-                cambiarPetAtras(listaMascotaUsuario.size, view)
-            }
-
-            view.btnFwd.setOnClickListener() {
-                cambiarPetAdelante(listaMascotaUsuario.size, view)
-            }
+            listaMascotaUsuario =
+                ArrayList(
+                    gson.fromJson(listaMascotaUsuarioString, Array<Pet>::class.java)
+                        .toList()
+                )
         }
-
-        view.buttonCambiarEstatus.setOnClickListener(){
-            cambiarEstatusPet()
-        }
-        view.fabCrearPet.setOnClickListener() {
-            abrirCrearPet(userString!!)
-        }
-
-        view.fabCargarFotoPet.setOnClickListener(){
-            agregarFotoPet()
-        }
-
-        return view
     }
 
     private fun cambiarEstatusPet() {
-        val iCrearPetActivity = Intent(context,CambiarEstatusActivity::class.java)
-        iCrearPetActivity.putExtra("listaTipoMascotaString",listaTipoMascotaString)
-        iCrearPetActivity.putExtra("userString",userString)
-        iCrearPetActivity.putExtra("petid",listaMascotaUsuario[idPet].id)
+        val iCrearPetActivity = Intent(context, CambiarEstatusActivity::class.java)
+        iCrearPetActivity.putExtra("listaTipoMascotaString", listaTipoMascotaString)
+        iCrearPetActivity.putExtra("userString", userString)
+        iCrearPetActivity.putExtra("petid", listaMascotaUsuario[idPet].id)
         iCrearPetActivity.putExtra("estatus", statusMascota)
         startActivity(iCrearPetActivity)
     }
@@ -171,12 +201,18 @@ class PetProfile : Fragment() {
 
         val service: Service = RestEngine.getRestEngine().create(Service::class.java)
         val result: Call<ResponsePetMedia> = service.agregarMediaPet(
-            filePart, RequestBody.create("multipart/form-data".toMediaTypeOrNull(),"image"),
-            RequestBody.create("multipart/form-data".toMediaTypeOrNull(), listaMascotaUsuario[idPet].id)
+            filePart, RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "image"),
+            RequestBody.create(
+                "multipart/form-data".toMediaTypeOrNull(),
+                listaMascotaUsuario[idPet].id
+            )
         )
 
         result.enqueue(object : Callback<ResponsePetMedia> {
-            override fun onResponse(call: Call<ResponsePetMedia>, response: Response<ResponsePetMedia>) {
+            override fun onResponse(
+                call: Call<ResponsePetMedia>,
+                response: Response<ResponsePetMedia>
+            ) {
                 val respuesta = response.body()
                 if (response.isSuccessful) {
                     Toast.makeText(context, "Foto agregada con éxito", Toast.LENGTH_LONG)
@@ -203,7 +239,7 @@ class PetProfile : Fragment() {
         })
     }
 
-    private fun actualizaVista(view: View ) {
+    public fun actualizaVista(view: View) {
         view.nombrePet.text = listaMascotaUsuario[idPet].name
         view.edadPet.text ="Edad: " +listaMascotaUsuario[idPet].age
         view.descripcionPet.text = "Descripción: " +listaMascotaUsuario[idPet].description
@@ -250,7 +286,7 @@ class PetProfile : Fragment() {
         statusMascota = "bien"
     }
 
-    private fun cambiarPetAtras(size:Int,view: View) {
+    private fun cambiarPetAtras(size: Int, view: View) {
        if (idPet>0){
             idPet--
         }else{
@@ -259,7 +295,7 @@ class PetProfile : Fragment() {
         actualizaVista(view)
     }
 
-    private fun cambiarPetAdelante(size:Int,view: View) {
+    private fun cambiarPetAdelante(size: Int, view: View) {
         if (idPet<size-1){
             idPet++
         }else{
@@ -270,10 +306,15 @@ class PetProfile : Fragment() {
 
     fun cargarImagenesPet() {
         val service: Service = RestEngine.getRestEngine().create(Service::class.java)
-        val result: Call<List<List<Pet_media>>> = service.consultaImagenPorMascota(listaMascotaUsuario[idPet].id.toInt())
+        val result: Call<List<List<Pet_media>>> = service.consultaImagenPorMascota(
+            listaMascotaUsuario[idPet].id.toInt()
+        )
 
         result.enqueue(object : Callback<List<List<Pet_media>>> {
-            override fun onResponse(call: Call<List<List<Pet_media>>>, response: Response<List<List<Pet_media>>>) {
+            override fun onResponse(
+                call: Call<List<List<Pet_media>>>,
+                response: Response<List<List<Pet_media>>>
+            ) {
                 var respuesta = response.body()!!
                 if (response.isSuccessful) {
                     listaPetMedia = respuesta[0]
@@ -320,11 +361,11 @@ class PetProfile : Fragment() {
             }
     }
 
-    private fun abrirCrearPet(userString:String) {
+    private fun abrirCrearPet(userString: String) {
 
-        val iCrearPetActivity = Intent(context,CrearPetActivity::class.java)
-        iCrearPetActivity.putExtra("listaTipoMascotaString",listaTipoMascotaString)
-        iCrearPetActivity.putExtra("userString",userString)
+        val iCrearPetActivity = Intent(context, CrearPetActivity::class.java)
+        iCrearPetActivity.putExtra("listaTipoMascotaString", listaTipoMascotaString)
+        iCrearPetActivity.putExtra("userString", userString)
         startActivity(iCrearPetActivity)
 
     }
@@ -336,9 +377,14 @@ class PetProfile : Fragment() {
     }
 
     private fun initRecycler() {
-        recyclerFotoPet.layoutManager = GridLayoutManager (context,2)
+        recyclerFotoPet.layoutManager = GridLayoutManager(context, 2)
         val adapter = RecyclerPetFotoAdapter(listaPetMedia)
         recyclerFotoPet.adapter = adapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        obtenerParametros()
+        actualizaVista(view1!!)
+    }
 }

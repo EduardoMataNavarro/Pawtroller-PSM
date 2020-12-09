@@ -34,6 +34,13 @@ class MainApp : AppCompatActivity(), Communicator{
     var listaMascotaEstatusPerdidoString: String = "[]"
     var listaMascotaEstatusfallecidaString: String = "[]"
 
+    val fHome = NewsFeed()
+    val fPets = PetProfile()
+    val fForum = ForumListView()
+    val fProfile = UserProfile()
+
+    var fragmentActual:Fragment = NewsFeed()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_app)
@@ -50,12 +57,7 @@ class MainApp : AppCompatActivity(), Communicator{
     }
 
     fun adminTabBar(){
-        val fHome = NewsFeed()
-        val fPets = PetProfile()
-        val fForum = ForumListView()
-        val fProfile = UserProfile()
-
-        mostrarPetProfile(fHome)
+       // mostrarPetProfile(fHome)
 
         ocultarTeclado()
 
@@ -199,9 +201,13 @@ class MainApp : AppCompatActivity(), Communicator{
 
                 frag.arguments = bundle
 
+                fragmentActual = frag
+
+
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.frame, frag)
                 transaction.commit()
+                fragmentActual.onResume()
             }
 
             override fun onFailure(call: Call<List<List<TipoMascota>>>, t: Throwable) {
@@ -242,6 +248,8 @@ class MainApp : AppCompatActivity(), Communicator{
         bundle.putString("listaMascotaEstatusfallecidaString",listaMascotaEstatusfallecidaString)
         frag.arguments = bundle
 
+        fragmentActual= frag
+
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frame, frag)
         transaction.commit()
@@ -263,5 +271,10 @@ class MainApp : AppCompatActivity(), Communicator{
         val inputMethodManager: InputMethodManager =
             getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mostrarPetProfile(fragmentActual!!)
     }
 }
