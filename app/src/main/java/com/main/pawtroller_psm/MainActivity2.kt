@@ -6,8 +6,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.main.pawtroller_psm.Models.User
-import com.main.pawtroller_psm.Models.UserRegister
+import com.main.pawtroller_psm.models.User
+import com.main.pawtroller_psm.models.UserRegister
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import org.json.JSONObject

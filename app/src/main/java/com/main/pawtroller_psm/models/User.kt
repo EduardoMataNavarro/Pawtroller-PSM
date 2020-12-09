@@ -1,4 +1,4 @@
-package com.main.pawtroller_psm.Models
+package com.main.pawtroller_psm.models
 
 data class User(
     val id:String,

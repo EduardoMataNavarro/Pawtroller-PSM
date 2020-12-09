@@ -7,8 +7,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import com.main.pawtroller_psm.Models.ResponseLogin
-import com.main.pawtroller_psm.Models.UserLogin
+import com.main.pawtroller_psm.models.ResponseLogin
+import com.main.pawtroller_psm.models.UserLogin
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import org.json.JSONObject
 import retrofit2.Call

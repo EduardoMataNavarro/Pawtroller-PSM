@@ -6,8 +6,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.main.pawtroller_psm.Models.EstatusPet
-import com.main.pawtroller_psm.Models.ResponseEstatusPet
+import com.main.pawtroller_psm.models.EstatusPet
+import com.main.pawtroller_psm.models.ResponseEstatusPet
 import kotlinx.android.synthetic.main.activity_cambiar_estatus.*
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import org.json.JSONObject

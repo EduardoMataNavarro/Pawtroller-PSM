@@ -1,4 +1,4 @@
-package com.main.pawtroller_psm.Models
+package com.main.pawtroller_psm.models
 
 data class Pet(
     val id: String,
@@ -38,7 +38,7 @@ data class RegistrarPet(
 data class ResponseEstatusPet(
     val id: String,
     val status: String,
-    val description: String,
+    val descripcion: String,
     val fecha_estatus: String,
     val lat: String,
     val long:String,

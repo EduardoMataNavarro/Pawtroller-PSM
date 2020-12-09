@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.main.pawtroller_psm.Models.ResponseEstatusPet
+import com.main.pawtroller_psm.models.ResponseEstatusPet
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.card_pet_perdida.view.*
 
@@ -27,7 +27,7 @@ class RecyclerPetPerdidaAdapter (val listaMascotaEstatusPerdido:List<ResponseEst
         fun render(petPerdida: ResponseEstatusPet){
             view.nombreRecyclerPetPerdida.text = petPerdida.pet.name
             view.edadRecyclerPetPerdida.text = petPerdida.fecha_estatus
-            view.descRecyclerPetPerdida.text = petPerdida.description
+            view.descRecyclerPetPerdida.text = petPerdida.descripcion
             Picasso.get().load(petPerdida.pet.img_path).into(view.fotoPetPerdida)
         }
     }

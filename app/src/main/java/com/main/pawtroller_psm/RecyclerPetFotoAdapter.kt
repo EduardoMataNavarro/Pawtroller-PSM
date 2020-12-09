@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.main.pawtroller_psm.Models.Pet_media
+import com.main.pawtroller_psm.models.Pet_media
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.card_pet.view.*
 

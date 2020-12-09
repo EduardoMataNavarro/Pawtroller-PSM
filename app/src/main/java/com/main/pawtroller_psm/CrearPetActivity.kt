@@ -6,22 +6,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
-import com.main.pawtroller_psm.Models.RegistrarPet
-import com.main.pawtroller_psm.Models.TipoMascota
-import com.main.pawtroller_psm.Models.User
+import com.main.pawtroller_psm.datos.DatosMascota
+import com.main.pawtroller_psm.datos.DatosUsuario
+import com.main.pawtroller_psm.models.RegistrarPet
+import com.main.pawtroller_psm.models.User
 import kotlinx.android.synthetic.main.fragment_crear_pet.*
 import java.time.LocalDate
 import java.time.Period
 import java.util.*
 
-class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener{
+class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
-    var user: User ?=null
-    var listaTipoMascota: List<TipoMascota> = listOf()
-
-    var userString: String ?= null
-    var listaTipoMascotaString:  String ?= null
+    var datosUsuario = DatosUsuario()
+    var datosMascota = DatosMascota()
 
     var day = 0
     var month = 0
@@ -40,19 +37,15 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         setContentView(R.layout.activity_crear_pet)
         supportActionBar?.hide()
 
-        val datos: Intent = intent
-        listaTipoMascotaString = datos.getStringExtra("listaTipoMascotaString")
-        userString = datos.getStringExtra("userString")
-        var gson = Gson()
-        listaTipoMascota = ArrayList(gson.fromJson(listaTipoMascotaString, Array<TipoMascota>::class.java).toList())
-        user = gson.fromJson(userString,User::class.java)
+        datosUsuario.obtenerDatosActivity(intent)
+        datosMascota.obtenerDatosActivity(intent)
 
         birthdatePetReg = findViewById(R.id.bithdatePetReg)
         option = findViewById(R.id.spinnerRegPet)
 
         var options:MutableList<String> = mutableListOf()
 
-        for (item in listaTipoMascota)
+        for (item in datosMascota.listaTipoMascota)
             options.add(item.name)
 
         val arrayAdapter = ArrayAdapter<String>(applicationContext,android.R.layout.simple_spinner_item,options)
@@ -63,10 +56,10 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
             AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                for ( item in listaTipoMascota){
-                    if(options[p2].equals(listaTipoMascota[p2].name)) {
-                        desc = listaTipoMascota[p2].description
-                        pettype = listaTipoMascota[p2].id
+                for ( item in datosMascota.listaTipoMascota){
+                    if(options[p2].equals(datosMascota.listaTipoMascota[p2].name)) {
+                        desc = datosMascota.listaTipoMascota[p2].description
+                        pettype = datosMascota.listaTipoMascota[p2].id
                         break
                     }
                 }
@@ -83,7 +76,7 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
         abrirDatePicker()
 
-        crearMascotaContinuacion(user!!)
+        crearMascotaContinuacion(datosUsuario.user!!)
 
         fabCerrarVentana.setOnClickListener(){
             finish()
@@ -96,11 +89,10 @@ class CrearPetActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
             val registrarPet: RegistrarPet = obtenerDatosCrearPet(user)
 
             if (validarDatos(registrarPet)) {
-                var gson = Gson()
-                var registrarPetString = gson.toJson(registrarPet)
 
                 val iMainActivity = Intent(applicationContext, CrearPetActivity2::class.java)
-                iMainActivity.putExtra("registrarPetString", registrarPetString)
+                datosMascota.registrarPet= registrarPet
+                datosMascota.enviarDatosActivity(iMainActivity)
                 startActivity(iMainActivity)
                 finish()
             }

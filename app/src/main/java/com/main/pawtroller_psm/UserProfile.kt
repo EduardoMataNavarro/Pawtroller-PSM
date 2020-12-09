@@ -12,10 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.main.pawtroller_psm.Models.Pet
-import com.main.pawtroller_psm.Models.ResetPasswordUser
-import com.main.pawtroller_psm.Models.ResponseLogin
-import com.main.pawtroller_psm.Models.User
+import com.main.pawtroller_psm.datos.DatosMascota
+import com.main.pawtroller_psm.datos.DatosUsuario
+import com.main.pawtroller_psm.models.ResetPasswordUser
+import com.main.pawtroller_psm.models.ResponseLogin
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import kotlinx.android.synthetic.main.fragment_user_profile.view.*
@@ -36,8 +36,9 @@ import java.time.format.DateTimeFormatter
 
 class UserProfile : Fragment() {
 
-    var listaMascotaUsuario :List<Pet> = listOf()
-    var user:User ?=null
+    var datosUsuario = DatosUsuario()
+    var datosMascota = DatosMascota()
+
     private val AVATAR_CODE = 1000
     private val BANNER_CODE = 1002
     private val AVATAR = "avatar"
@@ -57,31 +58,25 @@ class UserProfile : Fragment() {
         // Inflate the layout for this fragment
         val view =inflater.inflate(R.layout.fragment_user_profile, container, false)
 
-        var userString = arguments?.getString("userString")
-        var listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioString").toString()
-        var gson = Gson()
-        user = gson.fromJson(userString, User::class.java)
+        datosUsuario.obtenerDatosFragment(arguments)
+        datosMascota.obtenerDatosFragment(arguments)
 
-        var createdAtParse = LocalDate.parse(user!!.created_at, DateTimeFormatter.ISO_DATE_TIME)
+        var gson = Gson()
+
+
+        var createdAtParse = LocalDate.parse(datosUsuario.user!!.created_at, DateTimeFormatter.ISO_DATE_TIME)
         var createdAt = createdAtParse.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy"))
-        var birthDate = LocalDate.parse(user!!.birthdate, DateTimeFormatter.ISO_DATE_TIME)
+        var birthDate = LocalDate.parse(datosUsuario.user!!.birthdate, DateTimeFormatter.ISO_DATE_TIME)
         var period =  Period.between(birthDate, LocalDate.now())
         val edad = period.years
 
-        if(!"[]".equals(listaMascotaUsuarioString)) {
-             listaMascotaUsuario= ArrayList(
-                 gson.fromJson(
-                     listaMascotaUsuarioString,
-                     Array<Pet>::class.java
-                 ).toList()
-             )
-        }
-        view.userName.text = user!!.name
-        view.correoUser.text = "Correo: " + user!!.email
+
+        view.userName.text = datosUsuario.user!!.name
+        view.correoUser.text = "Correo: " + datosUsuario.user!!.email
         view.edadUser.text = "Edad: "+ edad.toString()
         view.registroUser.text = "Miembro desde: " + createdAt
-        Picasso.get().load(user!!.avatar_pic_path).into(view.userImage)
-        Picasso.get().load(user!!.banner_pic_path).into(view.fondoUser)
+        Picasso.get().load(datosUsuario.user!!.avatar_pic_path).into(view.userImage)
+        Picasso.get().load(datosUsuario.user!!.banner_pic_path).into(view.fondoUser)
 
         view.passEditBtn.setOnClickListener(){
             val pass:String = view.editTextTextPassword2.text.toString()
@@ -152,7 +147,7 @@ class UserProfile : Fragment() {
         val service: Service = RestEngine.getRestEngine().create(Service::class.java)
         val result: Call<ResponseLogin> = service.cambiarMediaUsuario(
             filePart, RequestBody.create("multipart/form-data".toMediaTypeOrNull(),tipoImagen),
-            RequestBody.create("multipart/form-data".toMediaTypeOrNull(), user!!.id)
+            RequestBody.create("multipart/form-data".toMediaTypeOrNull(), datosUsuario.user!!.id)
         )
 
         result.enqueue(object : Callback<ResponseLogin> {
@@ -160,10 +155,10 @@ class UserProfile : Fragment() {
                 val respuesta = response.body()
                 if (response.isSuccessful) {
                     if(AVATAR.equals(tipoImagen)) {
-                        Toast.makeText(context, "Avatar actualizado con éxito", Toast.LENGTH_LONG)
+                        Toast.makeText(context, "Avatar actualizado con éxito, lo verás en tu próximo inicio de sesión", Toast.LENGTH_LONG)
                             .show()
                     }else{
-                        Toast.makeText(context, "Banner actualizado con éxito", Toast.LENGTH_LONG)
+                        Toast.makeText(context, "Banner actualizado con éxito, lo verás en tu próximo inicio de sesión", Toast.LENGTH_LONG)
                             .show()
                     }
                     //TODO actualizar la vista para que se vea el cambio de banner y avatar
@@ -190,7 +185,7 @@ class UserProfile : Fragment() {
     }
 
     private fun cambiarPass(pass: String, resetPass: String) {
-        val resetPasswordUser = ResetPasswordUser(pass, resetPass, user!!.id)
+        val resetPasswordUser = ResetPasswordUser(pass, resetPass, datosUsuario.user!!.id)
 
         val service: Service = RestEngine.getRestEngine().create(Service::class.java)
         val result: Call<ResponseLogin> = service.resetPassword(resetPasswordUser)
@@ -239,7 +234,7 @@ class UserProfile : Fragment() {
 
     fun initRecycler(){
         recyclerPets.layoutManager = LinearLayoutManager(context)
-        val adapter = RecyclerPetAdapter(listaMascotaUsuario)
+        val adapter = RecyclerPetAdapter(datosMascota.listaMascotaUsuario)
         recyclerPets.adapter = adapter
     }
 

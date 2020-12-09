@@ -98,7 +98,7 @@
         android:layout_marginEnd="70dp"
         android:ems="10"
         android:gravity="center|center_horizontal|center_vertical"
-        android:hint="1900-31-01"
+        android:hint="1900-01-31"
         android:inputType="textPersonName"
         android:singleLine="true"
         android:textAlignment="center"

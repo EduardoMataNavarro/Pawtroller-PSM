@@ -1,16 +1,16 @@
 package com.main.pawtroller_psm
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
-import com.main.pawtroller_psm.Models.Pet
-import com.main.pawtroller_psm.Models.ResponseEstatusPet
-import com.main.pawtroller_psm.Models.TipoMascota
-import com.main.pawtroller_psm.Models.User
+import com.main.pawtroller_psm.datos.DatosMascota
+import com.main.pawtroller_psm.datos.DatosUsuario
+import com.main.pawtroller_psm.models.Pet
+import com.main.pawtroller_psm.models.ResponseEstatusPet
+import com.main.pawtroller_psm.models.TipoMascota
 import kotlinx.android.synthetic.main.activity_main_app.*
 import kotlinx.android.synthetic.main.fragment_pet_profile.*
 import org.json.JSONObject
@@ -21,16 +21,13 @@ import java.util.*
 
 class MainApp : AppCompatActivity(), Communicator{
 
-    var user: User ?=null
-    var listaMascotaUsuario : List<Pet> = listOf()
-    var listaTipoMascota: List<TipoMascota> = listOf()
+    var datosUsuario = DatosUsuario()
+    var datosMascota = DatosMascota()
+
     var listaEstatusPet = listOf("bien", "perdido", "fallecido")
     var listaMascotaEstatusPerdido: List<ResponseEstatusPet> = listOf()
     var listaMascotaEstatusFallecida: List<ResponseEstatusPet> = listOf()
 
-    var userString: String ?= null
-    var listaMascotaUsuarioString: String = "[]"
-    var listaTipoMascotaString:  String = "[]"
     var listaEstatusPetString: String = "[]"
     var listaMascotaEstatusPerdidoString: String = "[]"
     var listaMascotaEstatusfallecidaString: String = "[]"
@@ -57,13 +54,10 @@ class MainApp : AppCompatActivity(), Communicator{
             }
         }, 3000)
 
+        datosUsuario.obtenerDatosActivity(intent)
 
-        val datos: Intent = intent
-        userString = datos.getStringExtra("userString")
-        var gson = Gson()
-        user = gson.fromJson(userString, User::class.java)
 
-        if (userString != null) {
+        if (datosUsuario.userString != null) {
             adminTabBar()
         }
     }
@@ -96,7 +90,7 @@ class MainApp : AppCompatActivity(), Communicator{
     fun mostrarPetProfile(frag: Fragment){
 
         val service: Service = RestEngine.getRestEngine().create(Service::class.java)
-        val result: Call<List<List<Pet>>> = service.consultaMascotasPorUsuario(user!!.id.toInt())
+        val result: Call<List<List<Pet>>> = service.consultaMascotasPorUsuario(datosUsuario.user!!.id.toInt())
 
         result.enqueue(object : Callback<List<List<Pet>>> {
             override fun onResponse(
@@ -113,8 +107,8 @@ class MainApp : AppCompatActivity(), Communicator{
                 }
 
                 var gson = Gson()
-                listaMascotaUsuario = respuesta!![0]
-                listaMascotaUsuarioString = gson.toJson(listaMascotaUsuario)
+                datosMascota.listaMascotaUsuario = respuesta!![0]
+                datosMascota.listaMascotaUsuarioString = gson.toJson(datosMascota.listaMascotaUsuario)
 
                 obtenerMascotasPerdidas(frag)
             }
@@ -222,15 +216,12 @@ class MainApp : AppCompatActivity(), Communicator{
             ) {
                 arrayMascotas = response.body()!!
 
-                listaTipoMascota = arrayMascotas.get(0)
+                datosMascota.listaTipoMascota = arrayMascotas.get(0)
 
-                var gson = Gson()
-                listaTipoMascotaString = gson.toJson(listaTipoMascota)
 
                 val bundle = Bundle()
-                bundle.putString("userString", userString)
-                bundle.putString("listaMascotaUsuarioString", listaMascotaUsuarioString)
-                bundle.putString("listaTipoMascotaString", listaTipoMascotaString)
+                datosUsuario.enviarDatosFragment(bundle)
+                datosMascota.enviarDatosFragment(bundle)
                 bundle.putString(
                     "listaMascotaEstatusPerdidoString",
                     listaMascotaEstatusPerdidoString
@@ -260,7 +251,7 @@ class MainApp : AppCompatActivity(), Communicator{
 
     fun obtenerPets(){
         val service: Service = RestEngine.getRestEngine().create(Service::class.java)
-        val result: Call<List<List<Pet>>> = service.consultaMascotasPorUsuario(user!!.id.toInt())
+        val result: Call<List<List<Pet>>> = service.consultaMascotasPorUsuario(datosUsuario.user!!.id.toInt())
 
         result.enqueue(object : Callback<List<List<Pet>>> {
             override fun onResponse(
@@ -276,8 +267,8 @@ class MainApp : AppCompatActivity(), Communicator{
                     ).show()
                 }
                 var gson = Gson()
-                listaMascotaUsuario = respuesta!![0]
-                listaMascotaUsuarioString = gson.toJson(listaMascotaUsuario)
+                datosMascota.listaMascotaUsuario = respuesta!![0]
+                datosMascota.listaMascotaUsuarioString = gson.toJson(datosMascota.listaMascotaUsuario)
             }
 
             override fun onFailure(call: Call<List<List<Pet>>>, t: Throwable) {
@@ -289,9 +280,8 @@ class MainApp : AppCompatActivity(), Communicator{
     fun mostrarFragment(frag: Fragment){
         obtenerPets()
         val bundle = Bundle()
-        bundle.putString("userString", userString)
-        bundle.putString("listaMascotaUsuarioString", listaMascotaUsuarioString)
-        bundle.putString("listaTipoMascotaString", listaTipoMascotaString)
+        datosUsuario.enviarDatosFragment(bundle)
+        datosMascota.enviarDatosFragment(bundle)
         bundle.putString("listaMascotaEstatusPerdidoString", listaMascotaEstatusPerdidoString)
         bundle.putString("listaMascotaEstatusfallecidaString", listaMascotaEstatusfallecidaString)
         frag.arguments = bundle

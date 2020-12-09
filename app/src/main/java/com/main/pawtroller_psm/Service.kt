@@ -1,6 +1,6 @@
 package com.main.pawtroller_psm
 
-import com.main.pawtroller_psm.Models.*
+import com.main.pawtroller_psm.models.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call

@@ -1,4 +1,4 @@
-package com.main.pawtroller_psm.Models
+package com.main.pawtroller_psm.models
 
 data class Pet_media(
     val id: String,

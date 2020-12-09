@@ -12,7 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
-import com.main.pawtroller_psm.Models.*
+import com.main.pawtroller_psm.datos.DatosMascota
+import com.main.pawtroller_psm.datos.DatosUsuario
+import com.main.pawtroller_psm.models.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_pet_profile.*
@@ -32,27 +34,22 @@ import java.io.FileOutputStream
 
 class PetProfile : Fragment() {
 
+    var datosUsuario = DatosUsuario()
+    var datosMascota = DatosMascota()
+
     var idPet = 0
     private val FOTO_PET = 2000
 
-    var user: User ?=null
-    var listaMascotaUsuario: List<Pet> = listOf()
     var listaPetMedia: List<Pet_media> = listOf()
-    var listaTipoMascota: List<TipoMascota> = listOf()
     var listaMascotaEstatusPerdido: List<ResponseEstatusPet> = listOf()
     var listaMascotaEstatusFallecida: List<ResponseEstatusPet> = listOf()
 
-    var userString: String ?= null
-    var listaMascotaUsuarioString: String = "[]"
-    var listaTipoMascotaString:  String = "[]"
     var listaMascotaEstatusPerdidoString: String = "[]"
     var listaMascotaEstatusfallecidaString: String = "[]"
 
 
     var estatusPetId: String ?= null
     var statusMascota: String?= null
-    var vistas : Int = 0
-    var seleccion: Int =0
     var view1: View ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,31 +66,24 @@ class PetProfile : Fragment() {
         // Inflate the layout for this fragment
         view1 = inflater.inflate(R.layout.fragment_pet_profile, container, false)
 
-        userString= arguments?.getString("userString").toString()
-        listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioString").toString()
-        listaTipoMascotaString = arguments?.getString("listaTipoMascotaString").toString()
+        datosUsuario.obtenerDatosFragment(arguments)
+        datosMascota.obtenerDatosFragment(arguments)
         listaMascotaEstatusPerdidoString = arguments?.getString("listaMascotaEstatusPerdidoString").toString()
         listaMascotaEstatusfallecidaString = arguments?.getString("listaMascotaEstatusfallecidaString").toString()
 
         var gson = Gson()
 
 
-        if(!"[]".equals(listaMascotaUsuarioString)) {
-                 listaMascotaUsuario =
-                ArrayList(
-                    gson.fromJson(listaMascotaUsuarioString, Array<Pet>::class.java)
-                        .toList()
-                )
-
+        if(!"[]".equals(datosMascota.listaMascotaUsuarioString)) {
 
             actualizaVista(view1!!)
 
             view1!!.btnBack.setOnClickListener() {
-                cambiarPetAtras(listaMascotaUsuario.size, view1!!)
+                cambiarPetAtras(datosMascota.listaMascotaUsuario.size, view1!!)
             }
 
             view1!!.btnFwd.setOnClickListener() {
-                cambiarPetAdelante(listaMascotaUsuario.size, view1!!)
+                cambiarPetAdelante(datosMascota.listaMascotaUsuario.size, view1!!)
             }
         }
 
@@ -101,7 +91,7 @@ class PetProfile : Fragment() {
             cambiarEstatusPet()
         }
         view1!!.fabCrearPet.setOnClickListener() {
-            abrirCrearPet(userString!!)
+            abrirCrearPet()
         }
 
         view1!!.fabCargarFotoPet.setOnClickListener(){
@@ -112,18 +102,13 @@ class PetProfile : Fragment() {
     }
 
     private fun obtenerParametros() {
-        userString= arguments?.getString("userString").toString()
-        listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioString").toString()
-        listaTipoMascotaString = arguments?.getString("listaTipoMascotaString").toString()
+        datosUsuario.obtenerDatosFragment(arguments)
+        datosMascota.obtenerDatosFragment(arguments)
         listaMascotaEstatusPerdidoString = arguments?.getString("listaMascotaEstatusPerdidoString").toString()
         listaMascotaEstatusfallecidaString = arguments?.getString("listaMascotaEstatusfallecidaString").toString()
 
         var gson = Gson()
-        if(!"[]".equals(listaTipoMascota)) {
-            listaTipoMascota = ArrayList(
-                gson.fromJson(listaTipoMascotaString, Array<TipoMascota>::class.java).toList()
-            )
-        }
+
 
         if(!"[]".equals(listaMascotaEstatusPerdidoString)) {
             listaMascotaEstatusPerdido =
@@ -147,20 +132,13 @@ class PetProfile : Fragment() {
                 )
         }
 
-        if(!"[]".equals(listaMascotaUsuarioString)) {
-            listaMascotaUsuario =
-                ArrayList(
-                    gson.fromJson(listaMascotaUsuarioString, Array<Pet>::class.java)
-                        .toList()
-                )
-        }
     }
 
     private fun cambiarEstatusPet() {
         val iCrearPetActivity = Intent(context, CambiarEstatusActivity::class.java)
-        iCrearPetActivity.putExtra("listaTipoMascotaString", listaTipoMascotaString)
-        iCrearPetActivity.putExtra("userString", userString)
-        iCrearPetActivity.putExtra("petid", listaMascotaUsuario[idPet].id)
+        datosUsuario.enviarDatosActivity(iCrearPetActivity)
+        datosMascota.enviarDatosActivity(iCrearPetActivity)
+        iCrearPetActivity.putExtra("petid", datosMascota.listaMascotaUsuario[idPet].id)
         iCrearPetActivity.putExtra("estatus", statusMascota)
         startActivity(iCrearPetActivity)
     }
@@ -204,7 +182,7 @@ class PetProfile : Fragment() {
             filePart, RequestBody.create("multipart/form-data".toMediaTypeOrNull(), "image"),
             RequestBody.create(
                 "multipart/form-data".toMediaTypeOrNull(),
-                listaMascotaUsuario[idPet].id
+                datosMascota.listaMascotaUsuario[idPet].id
             )
         )
 
@@ -240,21 +218,21 @@ class PetProfile : Fragment() {
     }
 
     public fun actualizaVista(view: View) {
-        view.nombrePet.text = listaMascotaUsuario[idPet].name
-        view.edadPet.text ="Edad: " +listaMascotaUsuario[idPet].age
-        view.descripcionPet.text = "Descripción: " +listaMascotaUsuario[idPet].description
-        view.fecNacPet.text = "Fecha de nacimiento: " + listaMascotaUsuario[idPet].birthdate
-        view.nicknamePet.text = "Apodo: " + listaMascotaUsuario[idPet].nickname
+        view.nombrePet.text = datosMascota.listaMascotaUsuario[idPet].name
+        view.edadPet.text ="Edad: " +datosMascota.listaMascotaUsuario[idPet].age
+        view.descripcionPet.text = "Descripción: " +datosMascota.listaMascotaUsuario[idPet].description
+        view.fecNacPet.text = "Fecha de nacimiento: " + datosMascota.listaMascotaUsuario[idPet].birthdate
+        view.nicknamePet.text = "Apodo: " + datosMascota.listaMascotaUsuario[idPet].nickname
         var tipo: String = ""
-        for ( item in listaTipoMascota){
-            if(listaMascotaUsuario[idPet].type_id.equals(item.id)) {
+        for ( item in datosMascota.listaTipoMascota){
+            if(datosMascota.listaMascotaUsuario[idPet].type_id.equals(item.id)) {
                 tipo = item.name
                 view.tipoPet.text = "Tipo de Mascota:" + tipo
                 break
             }
         }
         view.tipoPet.text = "Tipo de Mascota:" + tipo
-        Picasso.get().load(listaMascotaUsuario[idPet].img_path).into(view.avatarPet)
+        Picasso.get().load(datosMascota.listaMascotaUsuario[idPet].img_path).into(view.avatarPet)
 
         asignaEstatusPet()
         view.estatusPet3.text = statusMascota
@@ -264,7 +242,7 @@ class PetProfile : Fragment() {
     private fun asignaEstatusPet() {
         if(listaMascotaEstatusFallecida.size>0){
             for (item in listaMascotaEstatusFallecida){
-                if(listaMascotaUsuario[idPet].id.equals(item.pet.id)){
+                if(datosMascota.listaMascotaUsuario[idPet].id.equals(item.pet.id)){
                     estatusPetId = "2"
                     statusMascota= "fallecido"
                     return
@@ -274,7 +252,7 @@ class PetProfile : Fragment() {
 
         if(listaMascotaEstatusPerdido.size>0){
             for (item in listaMascotaEstatusPerdido){
-                if(listaMascotaUsuario[idPet].id.equals(item.pet.id)){
+                if(datosMascota.listaMascotaUsuario[idPet].id.equals(item.pet.id)){
                     estatusPetId= "1"
                     statusMascota="perdido"
                     return
@@ -307,7 +285,7 @@ class PetProfile : Fragment() {
     fun cargarImagenesPet() {
         val service: Service = RestEngine.getRestEngine().create(Service::class.java)
         val result: Call<List<List<Pet_media>>> = service.consultaImagenPorMascota(
-            listaMascotaUsuario[idPet].id.toInt()
+            datosMascota.listaMascotaUsuario[idPet].id.toInt()
         )
 
         result.enqueue(object : Callback<List<List<Pet_media>>> {
@@ -361,11 +339,11 @@ class PetProfile : Fragment() {
             }
     }
 
-    private fun abrirCrearPet(userString: String) {
+    private fun abrirCrearPet() {
 
         val iCrearPetActivity = Intent(context, CrearPetActivity::class.java)
-        iCrearPetActivity.putExtra("listaTipoMascotaString", listaTipoMascotaString)
-        iCrearPetActivity.putExtra("userString", userString)
+        iCrearPetActivity.putExtra("listaTipoMascotaString", datosMascota.listaTipoMascotaString)
+        datosUsuario.enviarDatosActivity(iCrearPetActivity)
         startActivity(iCrearPetActivity)
 
     }

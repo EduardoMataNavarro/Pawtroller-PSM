@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.main.pawtroller_psm.Models.Pet
-import com.main.pawtroller_psm.Models.Pet_media
-import com.main.pawtroller_psm.Models.ResponseEstatusPet
+import com.main.pawtroller_psm.datos.DatosMascota
+import com.main.pawtroller_psm.datos.DatosUsuario
+import com.main.pawtroller_psm.models.Pet_media
+import com.main.pawtroller_psm.models.ResponseEstatusPet
 import kotlinx.android.synthetic.main.fragment_news_feed.*
 import kotlinx.android.synthetic.main.fragment_pet_profile.*
 
@@ -20,12 +21,13 @@ import kotlinx.android.synthetic.main.fragment_pet_profile.*
  */
 class NewsFeed : Fragment() {
 
-    var listaMascotaUsuario: List<Pet> = listOf()
+    var datosUsuario = DatosUsuario()
+    var datosMascota= DatosMascota()
+
+
     var listaPetMedia: List<Pet_media> = listOf()
     var listaMascotaEstatusPerdido: List<ResponseEstatusPet> = listOf()
 
-    var userString:String ?=null
-    var listaMascotaUsuarioString:String = "[]"
     var listaMascotaEstatusPerdidoString: String = "[]"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,18 +44,13 @@ class NewsFeed : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_news_feed, container, false)
 
-        userString= arguments?.getString("userString").toString()
-        listaMascotaUsuarioString= arguments?.getString("listaMascotaUsuarioString").toString()
+        datosUsuario.obtenerDatosFragment(arguments)
+        datosMascota.obtenerDatosFragment(arguments)
+
         listaMascotaEstatusPerdidoString= arguments?.getString("listaMascotaEstatusPerdidoString").toString()
         var gson = Gson()
 
-        if(!"[]".equals(listaMascotaUsuarioString)) {
-            listaMascotaUsuario =
-                ArrayList(
-                    gson.fromJson(listaMascotaUsuarioString, Array<Pet>::class.java)
-                        .toList()
-                )
-        }
+
 
         if(!"[]".equals(listaMascotaEstatusPerdidoString)) {
             listaMascotaEstatusPerdido =

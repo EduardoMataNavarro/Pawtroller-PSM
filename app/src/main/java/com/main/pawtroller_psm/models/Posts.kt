@@ -1,4 +1,4 @@
-package com.main.pawtroller_psm.Models
+package com.main.pawtroller_psm.models
 
 import java.sql.Timestamp
 

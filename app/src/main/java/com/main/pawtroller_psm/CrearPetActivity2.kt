@@ -8,8 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
-import com.main.pawtroller_psm.Models.*
+import com.main.pawtroller_psm.datos.DatosMascota
+import com.main.pawtroller_psm.models.*
 import kotlinx.android.synthetic.main.fragment_crear_pet.*
 import kotlinx.android.synthetic.main.fragment_nueva_foto_pet.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -26,9 +26,7 @@ import java.io.FileOutputStream
 
 class CrearPetActivity2 : AppCompatActivity() , UploadRequestBody.UploadCallback{
 
-    var registrarPet: RegistrarPet ?= null
-
-    var registrarPetString:String ?= null
+    var datosMascota = DatosMascota()
 
     var nameRegCon: TextView? = null
     var imgRegCon: ImageView? = null
@@ -39,22 +37,19 @@ class CrearPetActivity2 : AppCompatActivity() , UploadRequestBody.UploadCallback
         setContentView(R.layout.activity_crear_pet2)
         supportActionBar?.hide()
 
-        val datos: Intent = intent
-        registrarPetString = datos.getStringExtra("registrarPetString")
-        var gson = Gson()
-        registrarPet = gson.fromJson(registrarPetString, RegistrarPet::class.java)
+        datosMascota.obtenerDatosActivity(intent)
 
         nameRegCon = findViewById(R.id.nameRegCon)
         imgRegCon = findViewById(R.id.imgRegCon)
 
-        nameRegCon!!.text = registrarPet!!.name
+        nameRegCon!!.text = datosMascota.registrarPet!!.name
 
         imgRegCon!!.setOnClickListener() {
             cargarImagen()
         }
 
         btnRegPet2.setOnClickListener() {
-            completarDatos(registrarPet)
+            completarDatos(datosMascota.registrarPet)
         }
 
         fabCerrarVentana2.setOnClickListener(){
