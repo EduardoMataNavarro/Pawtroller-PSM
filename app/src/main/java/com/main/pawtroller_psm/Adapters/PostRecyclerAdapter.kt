@@ -6,16 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.main.pawtroller_psm.Models.Post
-import com.main.pawtroller_psm.PostDetailview
 import com.main.pawtroller_psm.R
-import com.main.pawtroller_psm.PostListview
+import com.main.pawtroller_psm.models.Post
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.post_card.view.*
-import java.lang.Error
 
 class PostRecyclerAdapter (private var PostsList:List<Post>, private var context: Context?, private var userString:String) :
     RecyclerView.Adapter<PostRecyclerAdapter.ViewHolder>(){

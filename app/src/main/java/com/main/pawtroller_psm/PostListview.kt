@@ -2,19 +2,17 @@ package com.main.pawtroller_psm
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.main.pawtroller_psm.Adapters.PostRecyclerAdapter
-import com.main.pawtroller_psm.Models.Pet
-import com.main.pawtroller_psm.Models.Post
-import com.main.pawtroller_psm.Models.PostCategory
+import com.main.pawtroller_psm.models.Post
+import com.main.pawtroller_psm.models.PostCategory
 import kotlinx.android.synthetic.main.fragment_post_listview.*
 import kotlinx.android.synthetic.main.fragment_post_listview.view.*
 import retrofit2.Call

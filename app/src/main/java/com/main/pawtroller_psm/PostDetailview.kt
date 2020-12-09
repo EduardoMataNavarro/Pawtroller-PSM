@@ -2,29 +2,25 @@ package com.main.pawtroller_psm
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.main.pawtroller_psm.Adapters.CommentRecyclerAdapter
 import com.main.pawtroller_psm.Models.Comment
 import com.main.pawtroller_psm.Models.CommentCreationData
-import com.main.pawtroller_psm.Models.Post
-import com.main.pawtroller_psm.Models.User
+import com.main.pawtroller_psm.models.Post
+import com.main.pawtroller_psm.models.User
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_post_detailview.*
 import kotlinx.android.synthetic.main.fragment_post_detailview.view.*
 import kotlinx.android.synthetic.main.fragment_user_profile.view.*
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Error
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

@@ -1,25 +1,21 @@
 package com.main.pawtroller_psm
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
+import com.main.pawtroller_psm.Adapters.PostRecyclerAdapter
+import com.main.pawtroller_psm.Models.Comment
 import com.main.pawtroller_psm.datos.DatosMascota
 import com.main.pawtroller_psm.datos.DatosUsuario
 import com.main.pawtroller_psm.models.Pet
+import com.main.pawtroller_psm.models.Post
 import com.main.pawtroller_psm.models.ResponseEstatusPet
 import com.main.pawtroller_psm.models.TipoMascota
-import com.main.pawtroller_psm.Adapters.PostRecyclerAdapter
-import com.main.pawtroller_psm.Models.Comment
-import com.main.pawtroller_psm.Models.Pet
-import com.main.pawtroller_psm.Models.Post
-import com.main.pawtroller_psm.Models.User
 import kotlinx.android.synthetic.main.activity_main_app.*
 import kotlinx.android.synthetic.main.fragment_pet_profile.*
 import org.json.JSONObject
@@ -27,9 +23,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import java.io.Serializable
-import java.lang.Error
-import kotlin.math.log
 
 class MainApp : AppCompatActivity(), Communicator,
     PostRecyclerAdapter.PostRecyclerClickEventHandler {
@@ -47,7 +40,7 @@ class MainApp : AppCompatActivity(), Communicator,
 
     val fHome = NewsFeed()
     val fPets = PetProfile()
-    val fForum = ForumListView()
+    val fForum = PostListview()
     val fProfile = UserProfile()
 
     var fragmentActual:Fragment = NewsFeed()
@@ -86,9 +79,9 @@ class MainApp : AppCompatActivity(), Communicator,
                 R.id.action_home -> {
                     mostrarFragment(fHome)
                 }
-                R.id.action_forum->{mostrarPostListview(fForum,userString)}
-                R.id.action_forum -> {
-                    mostrarFragment(fForum)
+                R.id.action_forum->{mostrarPostListview(fForum, datosUsuario.userString!!)}
+                R.id.action_pets -> {
+                    mostrarFragment(fPets)
                 }
                 R.id.action_profile -> {
                     mostrarFragment(fProfile)
@@ -317,7 +310,6 @@ class MainApp : AppCompatActivity(), Communicator,
         })
     }
 
-    fun mostrarFragment(frag:Fragment,userString: String){
     fun mostrarFragment(frag: Fragment){
         obtenerPets()
         val bundle = Bundle()

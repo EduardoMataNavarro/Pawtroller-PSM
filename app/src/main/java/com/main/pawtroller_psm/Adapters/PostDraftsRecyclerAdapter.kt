@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.main.pawtroller_psm.Models.Comment
-import com.main.pawtroller_psm.Models.Post
-import com.main.pawtroller_psm.Models.PostCreationData
-import com.main.pawtroller_psm.Models.User
 import com.main.pawtroller_psm.R
+import com.main.pawtroller_psm.models.PostCreationData
+import com.main.pawtroller_psm.models.User
 import com.squareup.picasso.Picasso
-import org.w3c.dom.Text
 
-class PostDraftsRecyclerAdapter (private var PostDraftsList:List<PostCreationData>, private var user:User, private var context: Context?) :
+
+class PostDraftsRecyclerAdapter (private var PostDraftsList:List<PostCreationData>, private var user: User, private var context: Context?) :
     RecyclerView.Adapter<PostDraftsRecyclerAdapter.ViewHolder>(){
 
     interface PostDraftEventHandler {

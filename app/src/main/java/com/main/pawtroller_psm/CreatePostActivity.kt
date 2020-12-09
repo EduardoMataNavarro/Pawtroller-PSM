@@ -1,7 +1,5 @@
 package com.main.pawtroller_psm
 
-import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -14,15 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.main.pawtroller_psm.Adapters.PostDraftsRecyclerAdapter
 import com.main.pawtroller_psm.LocalDatabase.InitDatabase
-import com.main.pawtroller_psm.Models.*
+import com.main.pawtroller_psm.Models.PostDrafts
+import com.main.pawtroller_psm.models.*
 import kotlinx.android.synthetic.main.fragment_crear_pet.*
 import kotlinx.android.synthetic.main.fragment_create_post.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.sql.Timestamp
-import java.time.Instant
-import java.time.format.DateTimeFormatter
 
 class CreatePostActivity : AppCompatActivity(), PostDraftsRecyclerAdapter.PostDraftEventHandler{
     companion object {

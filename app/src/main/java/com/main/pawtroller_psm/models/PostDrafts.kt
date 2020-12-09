@@ -3,9 +3,7 @@ package com.main.pawtroller_psm.Models
 import android.widget.Toast
 import com.main.pawtroller_psm.CreatePostActivity
 import com.main.pawtroller_psm.LocalDatabase.Contract
-import okhttp3.internal.format
-import java.lang.Error
-import java.sql.Timestamp
+import com.main.pawtroller_psm.models.PostCreationData
 
 class PostDrafts {
     fun getFromLocalDB(user_id: Int): ArrayList<PostCreationData> {

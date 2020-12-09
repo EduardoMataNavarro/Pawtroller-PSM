@@ -1,5 +1,6 @@
 package com.main.pawtroller_psm.Models
 
+import com.main.pawtroller_psm.models.User
 import java.sql.Timestamp
 
 
@@ -10,7 +11,7 @@ data class Comment(
     val post_id:Int,
     val created_at: Timestamp,
     val updated_at: Timestamp,
-    val user:User
+    val user: User
 )
 
 data class CommentCreationData(

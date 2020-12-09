@@ -1,5 +1,7 @@
 package com.main.pawtroller_psm
 
+import com.main.pawtroller_psm.Models.Comment
+import com.main.pawtroller_psm.Models.CommentCreationData
 import com.main.pawtroller_psm.models.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

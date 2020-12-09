@@ -10,9 +10,9 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import com.google.gson.Gson
-import com.main.pawtroller_psm.Models.PostCategory
-import com.main.pawtroller_psm.Models.TipoMascota
-import com.main.pawtroller_psm.Models.User
+import com.main.pawtroller_psm.models.PostCategory
+import com.main.pawtroller_psm.models.TipoMascota
+import com.main.pawtroller_psm.models.User
 import kotlinx.android.synthetic.main.fragment_create_post.view.*
 import retrofit2.Call
 import retrofit2.Callback
